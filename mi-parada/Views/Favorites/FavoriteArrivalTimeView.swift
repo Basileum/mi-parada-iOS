@@ -13,7 +13,8 @@ struct FavoriteArrivalTimeView: View {
     
     @State private var isLoading : Bool = true
     @State private var loadArrivals : [BusArrival] = []
-    
+    @State private var timer = Timer.publish(every: 15, on: .main, in: .common).autoconnect()
+
     
     var body: some View {
         HStack{
@@ -29,18 +30,29 @@ struct FavoriteArrivalTimeView: View {
             }
         }
         .onAppear {
-            loadNextBusArrival(stop: busStop, line: busLine) { result in
-                switch result {
-                case .success(let arrivals):
-                    loadArrivals = arrivals
-                case .failure(let error):
-                    // Show alert or log error
-                    print("Error: \(error.localizedDescription)")
-                }
-                isLoading=false
-            }
+            fetchArrivals()
+        }
+        .onReceive(timer) { _ in
+            fetchArrivals()
+        }
+        .onDisappear {
+            timer.upstream.connect().cancel() // stop timer when view goes away
         }
         
+    }
+    
+    
+    private func fetchArrivals() {
+        isLoading = true
+        loadNextBusArrival(stop: busStop, line: busLine) { result in
+            switch result {
+            case .success(let arrivals):
+                loadArrivals = arrivals
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+            isLoading = false
+        }
     }
     
     
