@@ -1,0 +1,79 @@
+//
+//  .gitignore
+//  mi-parada
+//
+//  Created by Basile on 01/08/2025.
+//
+
+# macOS system files
+    .DS_Store
+    .AppleDouble
+    .LSOverride
+
+# Icon files
+Icon?
+    ._*
+
+# Thumbnails
+Thumbs.db
+Desktop.ini
+
+# Xcode user settings
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+
+# Derived data and build products
+DerivedData/
+build/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# SwiftPM
+    .swiftpm/
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Archive & symbol files
+*.xcarchive
+*.dSYM.zip
+*.dSYM
+
+# .env or secret config files
+*.xcconfig
+!*.example.xcconfig
+
+# Temporary files
+*.tmp
+*.swp
+*.lock
+
+# Xcode project index
+    .idea/
+*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
+# XCTest log files
+*.xctestplan
+
+# Xcode previews
+*.preview-thumbnails
+
+# SPM checkouts (if used locally)
+    .checkouts/
+
+# Swift coverage files
+*.profraw
+*.profdata

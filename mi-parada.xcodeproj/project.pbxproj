@@ -6,7 +6,21 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F57AE2BB2E2A3D9600285328 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F57AE2BA2E2A3D9600285328 /* WidgetKit.framework */; };
+		F57AE2BD2E2A3D9600285328 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F57AE2BC2E2A3D9600285328 /* SwiftUI.framework */; };
+		F57AE2CE2E2A3D9800285328 /* mi-parada-widgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F57AE2B82E2A3D9600285328 /* mi-parada-widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F57AE3372E32553000285328 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F57AE3362E32553000285328 /* Launch Screen.storyboard */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		F57AE2CC2E2A3D9800285328 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F5A719C12E16F32B00079044 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F57AE2B72E2A3D9600285328;
+			remoteInfo = "mi-parada-widgetExtension";
+		};
 		F5A719D82E16F32C00079044 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F5A719C12E16F32B00079044 /* Project object */;
@@ -23,15 +37,84 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		F57AE2D32E2A3D9800285328 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				F57AE2CE2E2A3D9800285328 /* mi-parada-widgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		F57AE2B82E2A3D9600285328 /* mi-parada-widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "mi-parada-widgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F57AE2BA2E2A3D9600285328 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		F57AE2BC2E2A3D9600285328 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		F57AE2FB2E2E995A00285328 /* mi-parada-widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "mi-parada-widgetExtension.entitlements"; sourceTree = "<group>"; };
+		F57AE3362E32553000285328 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		F5A719C92E16F32B00079044 /* mi-parada.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "mi-parada.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5A719D72E16F32C00079044 /* mi-paradaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "mi-paradaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5A719E12E16F32C00079044 /* mi-paradaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "mi-paradaUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F57AE2D22E2A3D9800285328 /* Exceptions for "mi-parada-widget" folder in "mi-parada-widgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F57AE2B72E2A3D9600285328 /* mi-parada-widgetExtension */;
+		};
+		F57AE2D92E2A5A2200285328 /* Exceptions for "mi-parada" folder in "mi-parada-widgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"App Intent/BusStopSelectionIntent.swift",
+				Shared/Models/BusArrival.swift,
+				Shared/Models/BusArrivalAttributes.swift,
+				Shared/Models/BusLine.swift,
+				Shared/Models/BusStop.swift,
+				Shared/Models/Coordinate.swift,
+				Shared/Models/FavoritesBusStop.swift,
+				Shared/Models/LiveActivityWatchRequest.swift,
+				Shared/Models/WatchRequest.swift,
+				Shared/Models/WatchStop.swift,
+				Shared/Utils/ArrivalFormatsDistance.swift,
+				Shared/Utils/ArrivalFormatsTime.swift,
+				Shared/Utils/BackgroundPointMap.swift,
+				Shared/Utils/HexadecimalColor.swift,
+				Views/LineNumberView.swift,
+			);
+			target = F57AE2B72E2A3D9600285328 /* mi-parada-widgetExtension */;
+		};
+		F5A71A052E20598B00079044 /* Exceptions for "mi-parada" folder in "mi-parada" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F5A719C82E16F32B00079044 /* mi-parada */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		F57AE2BE2E2A3D9600285328 /* mi-parada-widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F57AE2D22E2A3D9800285328 /* Exceptions for "mi-parada-widget" folder in "mi-parada-widgetExtension" target */,
+			);
+			path = "mi-parada-widget";
+			sourceTree = "<group>";
+		};
 		F5A719CB2E16F32B00079044 /* mi-parada */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F5A71A052E20598B00079044 /* Exceptions for "mi-parada" folder in "mi-parada" target */,
+				F57AE2D92E2A5A2200285328 /* Exceptions for "mi-parada" folder in "mi-parada-widgetExtension" target */,
+			);
 			path = "mi-parada";
 			sourceTree = "<group>";
 		};
@@ -48,6 +131,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F57AE2B52E2A3D9600285328 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F57AE2BD2E2A3D9600285328 /* SwiftUI.framework in Frameworks */,
+				F57AE2BB2E2A3D9600285328 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F5A719C62E16F32B00079044 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -72,12 +164,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F57AE2B92E2A3D9600285328 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F57AE2BA2E2A3D9600285328 /* WidgetKit.framework */,
+				F57AE2BC2E2A3D9600285328 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F5A719C02E16F32B00079044 = {
 			isa = PBXGroup;
 			children = (
+				F57AE3362E32553000285328 /* Launch Screen.storyboard */,
+				F57AE2FB2E2E995A00285328 /* mi-parada-widgetExtension.entitlements */,
 				F5A719CB2E16F32B00079044 /* mi-parada */,
 				F5A719DA2E16F32C00079044 /* mi-paradaTests */,
 				F5A719E42E16F32C00079044 /* mi-paradaUITests */,
+				F57AE2BE2E2A3D9600285328 /* mi-parada-widget */,
+				F57AE2B92E2A3D9600285328 /* Frameworks */,
 				F5A719CA2E16F32B00079044 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +193,7 @@
 				F5A719C92E16F32B00079044 /* mi-parada.app */,
 				F5A719D72E16F32C00079044 /* mi-paradaTests.xctest */,
 				F5A719E12E16F32C00079044 /* mi-paradaUITests.xctest */,
+				F57AE2B82E2A3D9600285328 /* mi-parada-widgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +201,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F57AE2B72E2A3D9600285328 /* mi-parada-widgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F57AE2CF2E2A3D9800285328 /* Build configuration list for PBXNativeTarget "mi-parada-widgetExtension" */;
+			buildPhases = (
+				F57AE2B42E2A3D9600285328 /* Sources */,
+				F57AE2B52E2A3D9600285328 /* Frameworks */,
+				F57AE2B62E2A3D9600285328 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F57AE2BE2E2A3D9600285328 /* mi-parada-widget */,
+			);
+			name = "mi-parada-widgetExtension";
+			packageProductDependencies = (
+			);
+			productName = "mi-parada-widgetExtension";
+			productReference = F57AE2B82E2A3D9600285328 /* mi-parada-widgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		F5A719C82E16F32B00079044 /* mi-parada */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F5A719EB2E16F32C00079044 /* Build configuration list for PBXNativeTarget "mi-parada" */;
@@ -102,10 +230,12 @@
 				F5A719C52E16F32B00079044 /* Sources */,
 				F5A719C62E16F32B00079044 /* Frameworks */,
 				F5A719C72E16F32B00079044 /* Resources */,
+				F57AE2D32E2A3D9800285328 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				F57AE2CD2E2A3D9800285328 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				F5A719CB2E16F32B00079044 /* mi-parada */,
@@ -173,6 +303,9 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					F57AE2B72E2A3D9600285328 = {
+						CreatedOnToolsVersion = 16.4;
+					};
 					F5A719C82E16F32B00079044 = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -192,6 +325,7 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = F5A719C02E16F32B00079044;
 			minimizedProjectReferenceProxies = 1;
@@ -203,15 +337,24 @@
 				F5A719C82E16F32B00079044 /* mi-parada */,
 				F5A719D62E16F32C00079044 /* mi-paradaTests */,
 				F5A719E02E16F32C00079044 /* mi-paradaUITests */,
+				F57AE2B72E2A3D9600285328 /* mi-parada-widgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F57AE2B62E2A3D9600285328 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F5A719C72E16F32B00079044 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F57AE3372E32553000285328 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +375,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F57AE2B42E2A3D9600285328 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F5A719C52E16F32B00079044 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,6 +406,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		F57AE2CD2E2A3D9800285328 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F57AE2B72E2A3D9600285328 /* mi-parada-widgetExtension */;
+			targetProxy = F57AE2CC2E2A3D9800285328 /* PBXContainerItemProxy */;
+		};
 		F5A719D92E16F32C00079044 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F5A719C82E16F32B00079044 /* mi-parada */;
@@ -269,6 +424,67 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		F57AE2D02E2A3D9800285328 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "mi-parada-widgetExtension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T5QKS9X8HQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "mi-parada-widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "mi-parada-widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "baztech.mi-parada.mi-parada-widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F57AE2D12E2A3D9800285328 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "mi-parada-widgetExtension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T5QKS9X8HQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "mi-parada-widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "mi-parada-widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "baztech.mi-parada.mi-parada-widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		F5A719E92E16F32C00079044 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -391,12 +607,17 @@
 				CODE_SIGN_ENTITLEMENTS = "mi-parada/mi_parada.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T5QKS9X8HQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "mi-parada/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Mi parada";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
@@ -428,12 +649,17 @@
 				CODE_SIGN_ENTITLEMENTS = "mi-parada/mi_parada.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T5QKS9X8HQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "mi-parada/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Mi parada";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
@@ -546,6 +772,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F57AE2CF2E2A3D9800285328 /* Build configuration list for PBXNativeTarget "mi-parada-widgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F57AE2D02E2A3D9800285328 /* Debug */,
+				F57AE2D12E2A3D9800285328 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F5A719C42E16F32B00079044 /* Build configuration list for PBXProject "mi-parada" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
