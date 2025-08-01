@@ -9,7 +9,8 @@ import Foundation
 
 class BusArrivalService {
     static func fetchBusArrival(stopNumber: Int, completion: @escaping (Result<[BusArrival], Error>) -> Void) {
-        let urlString = "http://localhost:3000/next-bus/\(stopNumber)/"
+        let baseURL = Bundle.main.infoDictionary?["API_BASE_URL"] as? String
+        let urlString = "\(baseURL!)/next-bus/\(stopNumber)/"
         guard let url = URL(string: urlString) else {
             logger.error("Invalid URL: \(urlString)")
             return completion(.failure(URLError(.badURL)))
@@ -93,7 +94,8 @@ class BusArrivalService {
     }
     
     static func fetchBusArrival(stopNumber: Int, lineNumber: String, completion: @escaping (Result<[BusArrival], Error>) -> Void) {
-        let urlString = "http://localhost:3000/next-bus/\(stopNumber)/\(lineNumber)/"
+        let baseURL = Bundle.main.infoDictionary?["API_BASE_URL"] as? String
+        let urlString = "\(baseURL!)/next-bus/\(stopNumber)/\(lineNumber)/"
         guard let url = URL(string: urlString) else {
             logger.error("Invalid URL: \(urlString)")
             return completion(.failure(URLError(.badURL)))

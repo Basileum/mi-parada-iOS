@@ -11,8 +11,9 @@ class BusLineService {
 
     static func fetchBusLines(completion: @escaping (Result<[BusLine], Error>) -> Void) {
         logger.info("BusLineService: Fetching bus lines")
+        let baseURL = Bundle.main.infoDictionary?["API_BASE_URL"] as? String
         
-        guard let url = URL(string: "http://localhost:3000/lines-list") else {
+        guard let url = URL(string: "\(baseURL!)/lines-list") else {
             logger.error("BusLineService: Invalid URL")
             return completion(.failure(URLError(.badURL)))
         }

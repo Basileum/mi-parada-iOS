@@ -7,8 +7,9 @@ class BusLineMapService {
     private(set) var annotations = [MKAnnotation]()
     static func fetchGeoJSON(forLabel label: String, completion: @escaping (Result<([String:[MKMultiPolyline]], [String:[MKAnnotation]], [String:[BusStop]]), Error>) -> Void) {
         logger.info("BusLineMapService: Fetching GeoJSON for line \(label)")
+        let baseURL = Bundle.main.infoDictionary?["API_BASE_URL"] as? String
         
-        guard let url = URL(string: "http://localhost:3000/itinerary/\(label)") else {
+        guard let url = URL(string: "\(baseURL!)/itinerary/\(label)") else {
             logger.error("BusLineMapService: Invalid URL for line \(label)")
             completion(.failure(URLError(.badURL)))
             return

@@ -24,7 +24,10 @@ class NearStopService {
         completion: @escaping (Result<[NearStopData], Error>) -> Void
     ) {
         // Build URL with query parameters
-        var urlComponents = URLComponents(string: "http://localhost:3000/near-stop/")
+        let baseURL = Bundle.main.infoDictionary?["API_BASE_URL"] as? String
+        print("Current BaseURL : \(baseURL ?? "nul")")
+        
+        var urlComponents = URLComponents(string: "\(baseURL!)/near-stop/")
         urlComponents?.queryItems = [
             URLQueryItem(name: "longitude", value: String(location.coordinate.longitude)),
             URLQueryItem(name: "latitude", value: String(location.coordinate.latitude)),

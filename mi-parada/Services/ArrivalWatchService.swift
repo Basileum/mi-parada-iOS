@@ -11,8 +11,10 @@ class ArrivalWatchService {
     func sendWatchRequest(watchRequest: WatchRequest) {
         logger.info("ArrivalWatchService: Sending watch request for stop \(watchRequest.stopId) line \(watchRequest.line)")
         logger.debug("ArrivalWatchService: Device token: \(watchRequest.deviceToken.isEmpty ? "empty" : "\(watchRequest.deviceToken.prefix(8))...")")
+        let baseURL = Bundle.main.infoDictionary?["API_BASE_URL"] as? String
+
         
-        guard let url = URL(string: "http://localhost:3000/arrival-watch/liveactivity") else {
+        guard let url = URL(string: (baseURL! + "/arrival-watch/liveactivity")) else {
             logger.error("ArrivalWatchService: Invalid URL")
             return
         }
