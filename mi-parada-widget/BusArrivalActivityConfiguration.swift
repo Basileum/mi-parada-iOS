@@ -82,7 +82,7 @@ struct BusArrivalWidgetLiveActivity: Widget {
                                 .fontWeight(.medium)
                                 .foregroundColor(.white.opacity(0.8))
                             
-                            Text(formatTime(context.state.busEstimatedArrival))
+                            Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.busEstimatedArrival))
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
@@ -99,7 +99,7 @@ struct BusArrivalWidgetLiveActivity: Widget {
                                 .fontWeight(.medium)
                                 .foregroundColor(.white.opacity(0.8))
                             
-                            Text(formatTime(context.state.secondBusEstimatedArrival))
+                            Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.secondBusEstimatedArrival))
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
@@ -155,7 +155,7 @@ struct BusArrivalWidgetLiveActivity: Widget {
                 
                 DynamicIslandExpandedRegion(.trailing) {
                     VStack(alignment: .trailing, spacing: 4) {
-                        Text(formatTime(context.state.busEstimatedArrival))
+                        Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.busEstimatedArrival))
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(.blue)
@@ -177,12 +177,12 @@ struct BusArrivalWidgetLiveActivity: Widget {
                 LineNumberView(busLine: context.attributes.watchStop.busLine)
                     .frame(width: 30, height: 30)
             } compactTrailing: {
-                Text(formatTimeShort(context.state.busEstimatedArrival))
+                Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.busEstimatedArrival))
                     .font(.caption)
                     .fontWeight(.semibold)
                     .foregroundColor(.blue)
             } minimal: {
-                Text(formatTimeShort(context.state.busEstimatedArrival))
+                Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.busEstimatedArrival))
                     .font(.caption2)
                     .fontWeight(.bold)
                     .foregroundColor(.blue)
@@ -218,38 +218,6 @@ extension BusArrivalWidgetLiveActivity {
             return "Approaching"
         default:
             return "On the way"
-        }
-    }
-    
-    // Format time from seconds to human-readable format
-    private func formatTime(_ seconds: Int) -> String {
-        let minutes = seconds / 60
-        let remainingSeconds = seconds % 60
-        
-        if minutes > 0 {
-            if remainingSeconds > 0 {
-                return "\(minutes)m \(remainingSeconds)s"
-            } else {
-                return "\(minutes) min"
-            }
-        } else {
-            return "\(remainingSeconds)s"
-        }
-    }
-    
-    // Format time for compact display
-    private func formatTimeShort(_ seconds: Int) -> String {
-        let minutes = seconds / 60
-        let remainingSeconds = seconds % 60
-        
-        if minutes > 0 {
-            if remainingSeconds > 0 {
-                return "\(minutes)m\(remainingSeconds)s"
-            } else {
-                return "\(minutes)m"
-            }
-        } else {
-            return "\(remainingSeconds)s"
         }
     }
 }
