@@ -596,7 +596,9 @@ struct WatchSelectionView: View {
                 // Action buttons
                 VStack(spacing: 12) {
                     Button(action: {
-                        startWatchingSelectedLines()
+                        Task{
+                            await startWatchingSelectedLines()
+                        }
                     }) {
                         HStack {
                             if isStartingWatch {
@@ -662,7 +664,7 @@ struct WatchSelectionView: View {
     }
     
     // MARK: - Helper Functions
-    private func startWatchingSelectedLines() {
+    private func startWatchingSelectedLines() async{
         logger.info("BusStopDetailPopup: Starting to watch \(selectedLines.count) lines for stop \(stop.stopName)")
         isStartingWatch = true
         
@@ -685,7 +687,7 @@ struct WatchSelectionView: View {
                 
                 logger.info("BusStopDetailPopup: Starting to watch line \(line.label) for stop \(stop.stopName)")
                 // Start watching this line
-                watchManager.startWatching(busStop: busStop, busLine: busLine)
+                await watchManager.startWatching(busStop: busStop, busLine: busLine)
             }
         }
         

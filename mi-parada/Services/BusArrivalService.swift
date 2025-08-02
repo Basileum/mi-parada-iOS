@@ -202,19 +202,22 @@ class BusArrivalService {
     static func loadNextBusArrival(
         stop: BusStop,
         line: BusLine,
-        completion: @escaping (Result<[BusArrival], Error>) -> Void
-    ) {
-        BusArrivalService.fetchBusArrival(stopNumber: stop.id, lineNumber: line.label) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let arrivals):
-                    print("Fetched arrivals: \(arrivals)")
-                    completion(.success(arrivals))
-                    
-                case .failure(let error):
-                    print("Failed to fetch next arrivals")
-                    print(error)
-                    completion(.failure(error))
+    ) async throws -> [BusArrival] {
+        try await withCheckedThrowingContinuation { continuation in
+            BusArrivalService.fetchBusArrival(stopNumber: stop.id, lineNumber: line.label) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let arrivals):
+                        print("Fetched arrivals: \(arrivals)")
+                        let sortedArrivals = arrivals.sorted { $0.estimateArrive < $1.estimateArrive }
+                        print("sorted arrivals: \(arrivals)")
+                        continuation.resume(returning: sortedArrivals)
+                        
+                    case .failure(let error):
+                        print("Failed to fetch next arrivals")
+                        print(error)
+                        continuation.resume(throwing:error)
+                    }
                 }
             }
         }

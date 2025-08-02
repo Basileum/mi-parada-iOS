@@ -178,7 +178,9 @@ struct StopDetailView: View {
                                                 
                                                 // Watch button
                                                 Button(action: {
-                                                    arrivalWatch.startWatching(busStop: stop, busLine: line)
+                                                    Task{
+                                                        await arrivalWatch.startWatching(busStop: stop, busLine: line)
+                                                    }
                                                 }) {
                                                     Image(systemName: "binoculars")
                                                         .font(.title3)

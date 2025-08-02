@@ -18,7 +18,7 @@ class ArrivalWatchManager: ObservableObject {
 
     private let watchDuration: TimeInterval = 20 * 60 // 20 minutes
 
-    func startWatching(busStop: BusStop, busLine: BusLine) {
+    func  startWatching(busStop: BusStop, busLine: BusLine) async {
         logger.info("ArrivalWatchManager: Starting to watch stop \(busStop.name) (ID: \(busStop.id)) for line \(busLine.label)")
         
         requestNotificationPermissionIfNeeded()
@@ -30,7 +30,7 @@ class ArrivalWatchManager: ObservableObject {
         
         logger.logLiveActivity("started", stopId: busStop.id, line: busLine.label)
         
-       ArrivalLiveActivityManager().startLiveActivityWidget(watchStop: watchStop)  //{ token in
+       await ArrivalLiveActivityManager().startLiveActivityWidget(watchStop: watchStop)  //{ token in
 //            // Only send request if we have a valid token
 //            if !token.isEmpty {
 //                let request = WatchRequest(

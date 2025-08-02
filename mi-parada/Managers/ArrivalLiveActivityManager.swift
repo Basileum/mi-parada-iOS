@@ -22,45 +22,44 @@ final class ArrivalLiveActivityManager: ObservableObject {
     private var currentActivity: Activity<BusArrivalAttributes>? = nil
     
     
-    func startLiveActivityWidget  (
+    func startLiveActivityWidget   (
             watchStop: WatchStop
-    )  {
+    )  async{
             logger.info("ArrivalLiveActivityManager: Starting Live Activity for stop \(watchStop.busStop.name) line \(watchStop.busLine.label)")
             
             #if targetEnvironment(simulator)
             logger.warning("ArrivalLiveActivityManager: Running on simulator - push tokens may not be available")
             #endif
             
-            let initialState = BusArrivalAttributes.ContentState(
-                busEstimatedArrival: 2,
-                secondBusEstimatedArrival: 10
-            )
-            
-        do{
-            
-            let activity = try Activity.request(
-                attributes: BusArrivalAttributes(watchStop: watchStop),
-                content: .init(state: initialState, staleDate: nil),
-                pushType: .token
-            )
-            
-            logger.info("ArrivalLiveActivityManager: Live Activity created with ID: \(activity.id)")
-            
-            Task {
-                for await pushToken in activity.pushTokenUpdates {
-                    let pushTokenString = pushToken.reduce("") {
-                        $0 + String(format: "%02x", $1)
+        if let state = await buildInitialState(watchStop: watchStop){
+            do{
+                
+                let activity = try Activity.request(
+                    attributes: BusArrivalAttributes(watchStop: watchStop),
+                    content: .init(state: state, staleDate: nil),
+                    pushType: .token
+                )
+                
+                logger.info("ArrivalLiveActivityManager: Live Activity created with ID: \(activity.id) and content : \(activity.content)")
+                
+                Task {
+                    for await pushToken in activity.pushTokenUpdates {
+                        let pushTokenString = pushToken.reduce("") {
+                            $0 + String(format: "%02x", $1)
+                        }
+                        
+                        logger.info("New push token: \(pushTokenString)")
+                        
+                        try await self.sendPushToken(pushTokenString: pushTokenString, watchStop: watchStop)
                     }
-                    
-                    logger.info("New push token: \(pushTokenString)")
-                    
-                    try await self.sendPushToken(pushTokenString: pushTokenString, watchStop: watchStop)
                 }
             }
+            catch {
+                logger.error("ArrivalLiveActivityManager: Failed to create Live Activity: \(error)")
+            }
         }
-        catch {
-            logger.error("ArrivalLiveActivityManager: Failed to create Live Activity: \(error)")
-        }
+            
+        
         }
 
         
@@ -95,6 +94,23 @@ final class ArrivalLiveActivityManager: ObservableObject {
         )
         ArrivalWatchService().sendWatchRequest(watchRequest: request)
         logger.info("ArrivalWatchManager: Watch request sent for token: \(pushTokenString)")
+    }
+    
+    func buildInitialState(watchStop: WatchStop) async -> BusArrivalAttributes.ContentState? {
+        do {
+            let arrivals = try await BusArrivalService.loadNextBusArrival(stop: watchStop.busStop, line: watchStop.busLine)
+            print("buildInitialState")
+            print(arrivals)
+            guard arrivals.count >= 2 else { return nil }
+            
+            return BusArrivalAttributes.ContentState(
+                busEstimatedArrival: arrivals[0].estimateArrive,
+                secondBusEstimatedArrival: arrivals[1].estimateArrive
+            )
+        } catch {
+            logger.error("Error fetching arrivals: \(error)")
+            return nil
+        }
     }
 
 }
