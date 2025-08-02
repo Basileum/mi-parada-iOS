@@ -17,6 +17,9 @@ struct StopDetailView: View {
     @EnvironmentObject var arrivalWatch: ArrivalWatchManager
     @EnvironmentObject var busLinesManager : BusLinesManager
     
+    @State private var timer = Timer.publish(every: 15, on: .main, in: .common).autoconnect()
+
+    
     let busLineExemple : BusLine = BusLine(label: "24", externalFrom: "from", externalTo: "to", color: "#00aecf")
     
     // Group arrivals by line
@@ -266,6 +269,13 @@ struct StopDetailView: View {
             )
             loadNextBusArrival()
         }
+        .onReceive(timer) { _ in
+            loadNextBusArrival()
+        }
+        .onDisappear {
+            timer.upstream.connect().cancel() // stop timer when view goes away
+        }
+        
     }
     
     // MARK: - Load GeoJSON Data
