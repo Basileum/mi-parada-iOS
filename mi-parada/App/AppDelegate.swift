@@ -30,6 +30,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
                 print("Error requesting notification permission: \(error)")
             }
         }
+        
+        KeyService().registerDeviceKeyIfNeeded()
 
         return true
     }

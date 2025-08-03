@@ -42,7 +42,12 @@ class NearStopService {
         logger.logNetworkRequest(url.absoluteString, method: "GET")
         let startTime = Date()
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        guard let signedRequest = SignedRequestBuilder.makeRequest(url: url, method: "GET") else {
+            logger.error("NearStopService: Failed to build signed request")
+            return completion(.failure(URLError(.badURL)))
+        }
+        
+        URLSession.shared.dataTask(with: signedRequest) { data, response, error in
             let responseTime = Date().timeIntervalSince(startTime)
             
             if let error = error {
