@@ -68,12 +68,29 @@ struct SignedRequestBuilder {
                 timestamp: timestamp
             )
         } else {
-            // For POST, sign body + timestamp (you can adapt this)
-            if let body = body {
-                payloadData = body
-            } else {
-                payloadData = nil
+            guard let body = body else {
+                print("SignedRequestBuilder: No body for POST")
+                return nil
             }
+            
+            guard let bodyString = String(data: body, encoding: .utf8) else {
+                print("SignedRequestBuilder: Failed to encode body")
+                return nil
+            }
+            
+
+            // Compose payload string matching Node format:
+            let payloadString = "\(method)\n\(path)\n\n\(timestamp)\n\(bodyString)"
+
+            guard let canPayloadData = payloadString.data(using: .utf8) else {
+                print("SignedRequestBuilder: Failed to encode canonical payload")
+                return nil
+            }
+            payloadData = canPayloadData
+            
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = body
+
         }
         
         guard let dataToSign = payloadData else {

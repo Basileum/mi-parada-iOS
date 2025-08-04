@@ -108,8 +108,13 @@ class BusArrivalService {
 
         logger.logNetworkRequest(urlString, method: "GET")
         let startTime = Date()
+        
+        guard let signedRequest = SignedRequestBuilder.makeRequest(url: url, method: "GET") else {
+            logger.error("BusArrivalService: Failed to build signed request")
+            return completion(.failure(URLError(.badURL)))
+        }
 
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession.shared.dataTask(with: signedRequest) { data, response, error in
             let responseTime = Date().timeIntervalSince(startTime)
             
             if let error = error {

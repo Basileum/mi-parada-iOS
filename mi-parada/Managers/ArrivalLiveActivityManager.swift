@@ -61,12 +61,6 @@ final class ArrivalLiveActivityManager: ObservableObject {
             
         
         }
-
-        
-    
-   
-    
-
     
     func setup(withActivity activity: Activity<BusArrivalAttributes>) {
         logger.info("ArrivalLiveActivityManager: Setting up activity for stop \(activity.attributes.watchStop.busStop.name)")
@@ -83,7 +77,6 @@ final class ArrivalLiveActivityManager: ObservableObject {
         
         logger.debug("ArrivalLiveActivityManager: Activity view state initialized")
     }
-    
     
     func sendPushToken(pushTokenString: String, watchStop:WatchStop) async throws {
         let request = WatchRequest(
