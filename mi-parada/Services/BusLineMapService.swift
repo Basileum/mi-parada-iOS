@@ -17,8 +17,13 @@ class BusLineMapService {
 
         logger.logNetworkRequest(url.absoluteString, method: "GET")
         let startTime = Date()
+        
+        guard let signedRequest = SignedRequestBuilder.makeRequest(url: url, method: "GET") else {
+            logger.error("BusLineMapService: Failed to build signed request")
+            return completion(.failure(URLError(.badURL)))
+        }
 
-        URLSession.shared.dataTask(with: url) { data, _, error in
+        URLSession.shared.dataTask(with: signedRequest) { data, _, error in
             let responseTime = Date().timeIntervalSince(startTime)
             
             if let error = error {

@@ -11,26 +11,33 @@ class ArrivalWatchService {
     func sendWatchRequest(watchRequest: WatchRequest) {
         logger.info("ArrivalWatchService: Sending watch request for stop \(watchRequest.stopId) line \(watchRequest.line)")
         logger.debug("ArrivalWatchService: Device token: \(watchRequest.deviceToken.isEmpty ? "empty" : "\(watchRequest.deviceToken.prefix(8))...")")
-        let baseURL = Bundle.main.infoDictionary?["API_BASE_URL"] as? String
-
-        
-        guard let url = URL(string: (baseURL! + "/arrival-watch/liveactivity")) else {
+        guard let baseURL = Bundle.main.infoDictionary?["API_BASE_URL"] as? String,
+              let url = URL(string: baseURL + "/arrival-watch/liveactivity") else {
             logger.error("ArrivalWatchService: Invalid URL")
             return
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+        let jsonData: Data
         do {
-            let jsonData = try JSONEncoder().encode(watchRequest)
-            request.httpBody = jsonData
+            jsonData = try JSONEncoder().encode(watchRequest)
             logger.debug("ArrivalWatchService: Request body encoded successfully")
         } catch {
             logger.error("ArrivalWatchService: Failed to encode request: \(error)")
             return
         }
+        
+        // Build the signed request
+        guard var request = SignedRequestBuilder.makeRequest(
+            url: url,
+            method: "POST",
+            body: jsonData
+        ) else {
+            logger.error("ArrivalWatchService: Failed to create signed request")
+            return
+        }
+        
+        // Ensure Content-Type is set
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let startTime = Date()
         

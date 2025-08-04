@@ -9,10 +9,12 @@ import SwiftUI
 
 class KeyService {
     func registerDeviceKeyIfNeeded() {
+        logger.info(">>> Registering device key...")
         let defaults = UserDefaults.standard
         let didRegister = defaults.bool(forKey: "didRegisterPublicKey")
         
         if didRegister {
+            logger.info("Device key already registered")
             return
         }
         
@@ -32,7 +34,7 @@ class KeyService {
         
         let baseURL = Bundle.main.infoDictionary?["API_BASE_URL"] as? String
         
-        var request = URLRequest(url: URL(string: "\(baseURL!)/register-device-key")!)
+        var request = URLRequest(url: URL(string: "\(baseURL!)/register-device-key/")!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
@@ -50,9 +52,17 @@ class KeyService {
     }
     
     func signPayload(_ payload: Data, timestamp: String) -> String? {
+        logger.debug(#function)
         guard let privateKey = KeyManager.getPrivateKey() else { return nil }
         
-        let toSign = payload + timestamp.data(using: .utf8)!
+        
+        let toSign = payload
+        
+        let signedString = String(data: toSign, encoding: .utf8)!
+        print("Payload hex:", payload.map { String(format: "%02x", $0) }.joined())
+
+        print("Xcode signed string: '\(signedString)'")
+
         var error: Unmanaged<CFError>?
         
         guard let signature = SecKeyCreateSignature(
