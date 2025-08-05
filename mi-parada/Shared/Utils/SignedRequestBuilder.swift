@@ -57,7 +57,8 @@ struct SignedRequestBuilder {
             }
         }
         
-        let path = url.path
+        let path = strippedPath(for: url, removing: "/mi-parada")
+
         
         let payloadData: Data?
         if method.uppercased() == "GET" {
@@ -113,5 +114,14 @@ struct SignedRequestBuilder {
     static func signPayload(_ payload: Data, timestamp: String) -> String? {
         // Your signing logic here
         return KeyService().signPayload(payload, timestamp: timestamp)
+    }
+    
+    private static func strippedPath(for url: URL, removing prefix: String) -> String {
+        let fullPath = url.path
+        if fullPath.hasPrefix(prefix) {
+            return String(fullPath.dropFirst(prefix.count))
+        } else {
+            return fullPath
+        }
     }
 }
