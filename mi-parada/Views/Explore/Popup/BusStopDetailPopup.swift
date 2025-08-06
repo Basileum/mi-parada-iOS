@@ -18,6 +18,7 @@ struct BusStopDetailPopup: View {
     @State private var showingWatchSelection = false
     @EnvironmentObject var nav: NavigationCoordinator
 
+
     
     // Navigation callback to handle bus line selection
     var onBusLineSelected: ((BusLine) -> Void)? = nil
@@ -45,15 +46,15 @@ struct BusStopDetailPopup: View {
                     
                     // Action buttons
                     HStack(spacing: 12) {
-                        // Favorite button
-                        Button(action: {
-                            logger.info("BusStopDetailPopup: User toggled favorite for stop \(stop.stopName)")
-                            toggleFavorite()
-                        }) {
-                            Image(systemName: isFavorite ? "star.fill" : "star")
-                                .font(.title2)
-                                .foregroundColor(isFavorite ? .yellow : .secondary)
-                        }
+//                        // Favorite button
+//                        Button(action: {
+//                            logger.info("BusStopDetailPopup: User toggled favorite for stop \(stop.stopName)")
+//                            favorites.toggle(FavoritesBusStop(stop: stop, busLines: [line]))
+//                        }) {
+//                            Image(systemName: isFavorite ? "star.fill" : "star")
+//                                .font(.title2)
+//                                .foregroundColor(isFavorite ? .yellow : .secondary)
+//                        }
                         
                         // Watch button
                         Button(action: {
@@ -212,6 +213,8 @@ struct BusStopDetailPopup: View {
             })
         )
         favoritesManager.toggle(favoriteStop)
+        
+        
     }
 }
 

@@ -89,6 +89,7 @@ struct HomeMapView: View {
                                     )
                                 )
                             }
+                            fetchNearbyStops(location: location)
                         }
                         // Reset map dragging state
                         isMapDragged = false

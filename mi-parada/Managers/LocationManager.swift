@@ -12,6 +12,9 @@ import SwiftUI
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
     
+    private var hasCentered = false
+
+    
     @Published var cameraPosition: MapCameraPosition = .region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 40.41831, longitude: -3.70275),
@@ -49,9 +52,14 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 center: coordinate,
                 span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
             )
-            self.cameraPosition = .region(region)
+            if !self.hasCentered {
+                self.cameraPosition = .region(region)
+                self.hasCentered = true
+                logger.debug("LocationManager: Updated camera position")
+
+            }
             self.currentLocation = location
-            logger.debug("LocationManager: Updated camera position and current location")
+            logger.debug("LocationManager: Updated current location")
         }
     }
 }
