@@ -51,7 +51,7 @@ struct BusLineRouteRowView: View {
 
                     Spacer()
                 }
-                .background(Color.white)
+                //.background(Color.white)
                 //.cornerRadius(12)
                 //.shadow(radius: 2)
                 //.scaleEffect(x:1.0, y:scale)
