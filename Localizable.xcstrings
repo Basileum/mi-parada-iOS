@@ -1,0 +1,451 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    " → " : {
+
+    },
+    "%@" : {
+
+    },
+    "%@ %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$lld"
+          }
+        }
+      }
+    },
+    "%lld lines" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld líneas"
+          }
+        }
+      }
+    },
+    "%lld meters away" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A %lld metros "
+          }
+        }
+      }
+    },
+    "2ND" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SIG."
+          }
+        }
+      }
+    },
+    "3 min" : {
+
+    },
+    "17 min" : {
+
+    },
+    "A an example control that runs a timer." : {
+
+    },
+    "Bottom %@" : {
+
+    },
+    "Bus Lines" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Líneas de bus"
+          }
+        }
+      }
+    },
+    "Bus Stop Selection" : {
+
+    },
+    "BusStop" : {
+
+    },
+    "Cancel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        }
+      }
+    },
+    "Check back later for updates" : {
+
+    },
+    "Clear" : {
+
+    },
+    "Clear All Logs" : {
+
+    },
+    "Coming soon" : {
+
+    },
+    "Configuration" : {
+
+    },
+    "Explore" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explora"
+          }
+        }
+      }
+    },
+    "Favorite Emoji" : {
+
+    },
+    "Favorite Emoji:" : {
+
+    },
+    "Favorite Stops" : {
+
+    },
+    "Favorites" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoritos"
+          }
+        }
+      }
+    },
+    "Hello %@" : {
+
+    },
+    "Incidents" : {
+
+    },
+    "L" : {
+
+    },
+    "Leading" : {
+
+    },
+    "Line %@" : {
+
+    },
+    "lines" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "líneas"
+          }
+        }
+      }
+    },
+    "Lines" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Líneas"
+          }
+        }
+      }
+    },
+    "Loading arrivals..." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando llegadas…"
+          }
+        }
+      }
+    },
+    "Loading map..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando mapa…"
+          }
+        }
+      }
+    },
+    "Loading nearby stops..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando paradas cercanas…"
+          }
+        }
+      }
+    },
+    "Loading..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando…"
+          }
+        }
+      }
+    },
+    "Logs" : {
+
+    },
+    "meters away" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "metros"
+          }
+        }
+      }
+    },
+    "NEXT" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1ERO"
+          }
+        }
+      }
+    },
+    "Next Bus" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Llegadas"
+          }
+        }
+      }
+    },
+    "Next Buses" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Próximos buses"
+          }
+        }
+      }
+    },
+    "No arrivals available" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Llegadas indisponibles"
+          }
+        }
+      }
+    },
+    "No buses scheduled" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay buses programados"
+          }
+        }
+      }
+    },
+    "No incidents reported" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay incidentes"
+          }
+        }
+      }
+    },
+    "No stops available" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay paradas"
+          }
+        }
+      }
+    },
+    "Off" : {
+
+    },
+    "On" : {
+
+    },
+    "Refresh" : {
+
+    },
+    "Schedule" : {
+
+    },
+    "Search a bus line..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar una línea de bus…"
+          }
+        }
+      }
+    },
+    "Search logs..." : {
+
+    },
+    "Select a Bus Line" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona una línea de bus"
+          }
+        }
+      }
+    },
+    "Select Bus Stop" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona una parada"
+          }
+        }
+      }
+    },
+    "Select which bus lines you want to watch at %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escoge la línea de bus que quieres observar en %@ "
+          }
+        }
+      }
+    },
+    "Selected Bus Stop" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parada seleccionada"
+          }
+        }
+      }
+    },
+    "Show stops in this area" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar paradas en esta zona"
+          }
+        }
+      }
+    },
+    "Shows your saved favorite stops." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presenta tu paradas favoritas"
+          }
+        }
+      }
+    },
+    "Start a timer" : {
+
+    },
+    "Start Timer" : {
+
+    },
+    "Start Watching" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Observar"
+          }
+        }
+      }
+    },
+    "Started watching %lld line(s)" : {
+
+    },
+    "Starting..." : {
+
+    },
+    "T %@" : {
+
+    },
+    "This is an example widget." : {
+
+    },
+    "This will permanently delete all log files. This action cannot be undone." : {
+
+    },
+    "Time:" : {
+
+    },
+    "Timer" : {
+
+    },
+    "Timer is running" : {
+
+    },
+    "Timer Name" : {
+
+    },
+    "Timer Name Configuration" : {
+
+    },
+    "Trailing" : {
+
+    },
+    "until arrival" : {
+
+    },
+    "Watch Bus Lines" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Observar líneas de bus"
+          }
+        }
+      }
+    },
+    "Watching" : {
+
+    }
+  },
+  "version" : "1.0"
+}
