@@ -23,6 +23,9 @@ struct HomeMapView: View {
     @State private var isMapDragged = false
     @State private var draggedLocation: CLLocation?
     
+    @State private var lastFetchedLocation: CLLocation?
+    @State private var lastFetchTime: Date?
+    
     // Navigation callback
     var onBusLineSelected: ((BusLine) -> Void)? = nil
     
@@ -137,7 +140,15 @@ struct HomeMapView: View {
                 }
             }
             .onReceive(locationManager.$currentLocation) { location in
-                if let location = location {
+                guard let location = location else { return }
+                
+                if shouldFetchNearbyStops(
+                    currentLocation: location,
+                    lastLocation: lastFetchedLocation,
+                    lastTime: lastFetchTime
+                ) {
+                    lastFetchedLocation = location
+                    lastFetchTime = Date()
                     fetchNearbyStops(location: location)
                 }
             }
@@ -259,6 +270,21 @@ struct HomeMapView: View {
         let fromLocation = CLLocation(latitude: from.latitude, longitude: from.longitude)
         let toLocation = CLLocation(latitude: to.latitude, longitude: to.longitude)
         return fromLocation.distance(from: toLocation)
+    }
+    
+    func shouldFetchNearbyStops(
+        currentLocation: CLLocation,
+        lastLocation: CLLocation?,
+        lastTime: Date?,
+        minDistance: CLLocationDistance = 50,
+        minInterval: TimeInterval = 10
+    ) -> Bool {
+        let now = Date()
+        
+        let isTimeOK = lastTime == nil || now.timeIntervalSince(lastTime!) > minInterval
+        let isDistanceOK = lastLocation == nil || currentLocation.distance(from: lastLocation!) > minDistance
+        
+        return isTimeOK && isDistanceOK
     }
     
 
