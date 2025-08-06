@@ -54,9 +54,20 @@ class Logger: ObservableObject {
     private var currentLogFile: URL?
     private var currentLogFileHandle: FileHandle?
     
+    // Only logs with a level >= this threshold will be written
+    private let logLevelThreshold: LogLevel
+    
     private init() {
         dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        
+        #if DEBUG_LOGGING
+        logLevelThreshold = .debug
+        print("✅ DEBUG_LOGGING flag is ENABLED")
+        #else
+        logLevelThreshold = .info
+        print("❌ DEBUG_LOGGING flag is DISABLED")
+        #endif
         
         setupLogDirectory()
         rotateLogFilesIfNeeded()
@@ -92,6 +103,10 @@ class Logger: ObservableObject {
     // MARK: - Private Logging Implementation
     
     private func log(_ level: LogLevel, message: String, file: String, function: String, line: Int) {
+        guard level.priority >= logLevelThreshold.priority else {
+            return
+        }
+        
         let fileName = URL(fileURLWithPath: file).lastPathComponent
         let timestamp = dateFormatter.string(from: Date())
         let logMessage = "[\(timestamp)] [\(level.rawValue)] [\(fileName):\(line)] \(function): \(message)\n"
