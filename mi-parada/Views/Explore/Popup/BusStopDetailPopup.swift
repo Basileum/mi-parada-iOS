@@ -19,6 +19,7 @@ struct BusStopDetailPopup: View {
     @EnvironmentObject var nav: NavigationCoordinator
 
 
+
     
     // Navigation callback to handle bus line selection
     var onBusLineSelected: ((BusLine) -> Void)? = nil
@@ -100,31 +101,67 @@ struct BusStopDetailPopup: View {
                 .padding(.vertical, 12)
             
             // Tab selector
+//            HStack(spacing: 0) {
+//                Button(action: {
+//                    withAnimation(.easeInOut(duration: 0.3)) {
+//                        logger.debug("BusStopDetailPopup: User switched to Next Bus tab")
+//                        selectedTab = 0
+//                    }
+//                }) {
+//                    VStack(spacing: 4) {
+//                        Image(systemName: "bus.fill")
+//                            .font(.system(size: 16))
+//                        Text("Next Buses")
+//                            .font(.caption)
+//                    }
+//                    .foregroundColor(selectedTab == 0 ? .blue : .secondary)
+//                    .frame(maxWidth: .infinity)
+//                    //.padding(.vertical, 12)
+//                }
+//                Button(action: {
+//                    withAnimation(.easeInOut(duration: 0.3)) {
+//                        logger.debug("BusStopDetailPopup: User switched to Next Bus tab")
+//                        selectedTab = 1
+//                    }
+//                }) {
+//                    VStack(spacing: 4) {
+//                        Image(systemName: "bus.fill")
+//                            .font(.system(size: 16))
+//                        Text("Next Buses")
+//                            .font(.caption)
+//                    }
+//                    .foregroundColor(selectedTab == 1 ? .blue : .secondary)
+//                    .frame(maxWidth: .infinity)
+//                    //.padding(.vertical, 12)
+//                }
+//            }
             HStack(spacing: 2) {
                 TabButton(
+                    image: Image(systemName: "bus.fill"),
                     title: "Next Bus",
                     isSelected: selectedTab == 0,
-                    action: { 
+                    action: {
                         logger.debug("BusStopDetailPopup: User switched to Next Bus tab")
-                        selectedTab = 0 
+                        selectedTab = 0
                     }
                 )
                 
                 TabButton(
+                    image: Image(systemName: "info.square"),
                     title: "Info",
                     isSelected: selectedTab == 1,
-                    action: { 
+                    action: {
                         logger.debug("BusStopDetailPopup: User switched to Info tab")
-                        selectedTab = 1 
+                        selectedTab = 1
                     }
                 )
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 8)
+            //.padding(.horizontal, 20)
+            .padding(.vertical, 2)
             .padding(.horizontal, 4)
             .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color(.systemGray5))
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(.systemGray5).opacity(0.8)) // Adaptive color for light/dark
             )
             .padding(.horizontal, 20)
             
@@ -172,6 +209,8 @@ struct BusStopDetailPopup: View {
             WatchSelectionView(stop: stop, onBusLineSelected: onBusLineSelected)
         }
     }
+    
+    
     
     // MARK: - Computed Properties
     private var isFavorite: Bool {
@@ -278,27 +317,49 @@ struct BusLineItemView: View {
 
 // MARK: - Tab Button
 struct TabButton: View {
+    let image: Image
     let title: String
     let isSelected: Bool
     let action: () -> Void
+    @Environment(\.colorScheme) var colorScheme
+
     
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .font(.subheadline)
-                .fontWeight(isSelected ? .semibold : .medium)
-                .foregroundColor(isSelected ? .primary : .secondary)
-                .padding(.vertical, 12)
-                .padding(.horizontal, 16)
-                .frame(maxWidth: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(isSelected ? Color.white : Color.clear)
-                        .shadow(color: isSelected ? .black.opacity(0.1) : .clear, radius: 2, x: 0, y: 1)
-                )
+            VStack(spacing: 4) {
+                image.font(.system(size: 16))
+                Text(title)
+                    .font(.caption)
+            }
+            //.fontWeight(isSelected ? .semibold : .medium)
+            
+            .foregroundColor(isSelected ? .blue : .secondary)
+            .padding(.vertical, 2)
+            .padding(.horizontal, 2)
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isSelected ? tabBackgroundColor : Color.clear)
+                    .shadow(color: isSelected ? shadowColor : .clear, radius: 3, x: 0, y: 2)
+            )
+            .padding(3)
+//            .background(
+//                RoundedRectangle(cornerRadius: 8)
+//                    .fill(isSelected ? Color.white : Color.clear)
+//                    .shadow(color: isSelected ? .black.opacity(0.1) : .clear, radius: 2, x: 0, y: 1)
+//            )
         }
         .buttonStyle(PlainButtonStyle())
         .animation(.easeInOut(duration: 0.2), value: isSelected)
+    }
+    
+    // Light & dark mode adaptive colors
+    var tabBackgroundColor: Color {
+        colorScheme == .dark ? Color(.systemGray3) : Color.white
+    }
+    
+    var shadowColor: Color {
+        colorScheme == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.15)
     }
 }
 
