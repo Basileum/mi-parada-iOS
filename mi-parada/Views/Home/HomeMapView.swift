@@ -22,6 +22,8 @@ struct HomeMapView: View {
     @State private var showingStopsButton = false
     @State private var isMapDragged = false
     @State private var draggedLocation: CLLocation?
+    @State private var userHasDraggedMap = false
+
     
     @State private var lastFetchedLocation: CLLocation?
     @State private var lastFetchTime: Date?
@@ -81,19 +83,20 @@ struct HomeMapView: View {
                         logger.info("HomeMapView: User tapped location button")
                         // Recenter map to user location
                         if let location = locationManager.currentLocation {
+                            let region = MKCoordinateRegion(
+                                center: location.coordinate,
+                                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                            )
                             withAnimation(.easeInOut(duration: 0.5)) {
-                                locationManager.cameraPosition = .region(
-                                    MKCoordinateRegion(
-                                        center: location.coordinate,
-                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                                    )
-                                )
+                                locationManager.cameraPosition = .region(region)
+                                
                             }
                             fetchNearbyStops(location: location)
                         }
                         // Reset map dragging state
                         isMapDragged = false
                         showingStopsButton = false
+                        userHasDraggedMap = false
                     }) {
                         Image(systemName: "location.fill")
                             .font(.title2)
@@ -246,22 +249,20 @@ struct HomeMapView: View {
         let newCenter = context.region.center
         let distance = calculateDistance(from: currentLocation.coordinate, to: newCenter)
         
-        // If the map center has moved significantly (more than 100 meters)
+        // If moved more than 100 meters from user location
         if distance > 100 {
-            logger.debug("HomeMapView: Map dragged to new location, distance: \(distance)m")
             isMapDragged = true
+            userHasDraggedMap = true
             draggedLocation = CLLocation(latitude: newCenter.latitude, longitude: newCenter.longitude)
             
-            // Show the button after a short delay to avoid showing it during continuous dragging
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 if isMapDragged {
-                    withAnimation(.easeInOut(duration: 0.3)) {
+                    withAnimation {
                         showingStopsButton = true
                     }
                 }
             }
         } else {
-            // Reset if map is back near user location
             isMapDragged = false
             showingStopsButton = false
         }
