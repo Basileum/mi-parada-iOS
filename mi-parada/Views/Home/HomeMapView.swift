@@ -176,6 +176,7 @@ struct HomeMapView: View {
             // Bus stop detail popup
             if popupVisible, let selectedStop = selectedStop {
                 BusStopDetailPopup(stop: selectedStop, isPresented: $showingStopDetail, onBusLineSelected: onBusLineSelected)
+                    .id(selectedStop.stopId)
                     .offset(y: popupOffset)
                     .onAppear {
                         // Start off-screen and slide up
