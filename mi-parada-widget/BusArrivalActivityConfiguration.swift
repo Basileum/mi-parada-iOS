@@ -9,6 +9,7 @@ import ActivityKit
 import WidgetKit
 import SwiftUI
 
+
 // This struct is not used - we're using BusArrivalAttributes instead
 // struct BusArrivalWidgetAttributes: ActivityAttributes {
 //     public struct ContentState: Codable, Hashable {
@@ -21,6 +22,8 @@ import SwiftUI
 // }
 
 struct BusArrivalWidgetLiveActivity: Widget {
+    
+
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: BusArrivalAttributes.self) { context in
             // Lock screen/banner UI goes here
@@ -138,6 +141,11 @@ struct BusArrivalWidgetLiveActivity: Widget {
             .cornerRadius(16)
             .activityBackgroundTint(Color.clear)
             .activitySystemActionForegroundColor(Color.white)
+            .onChange(of: context.state) { newState in
+                logger.info(" Live Activity updated from server push:")
+                logger.info(" ETA: \(newState.busEstimatedArrival) seconds")
+                logger.info(" 2nd ETA: \(newState.secondBusEstimatedArrival ?? -1) seconds")
+            }
         } dynamicIsland: { context in
             DynamicIsland {
                 // Expanded UI goes here
@@ -189,7 +197,9 @@ struct BusArrivalWidgetLiveActivity: Widget {
             }
             .widgetURL(URL(string: "mi-parada://bus-arrival"))
             .keylineTint(Color.blue)
+            
         }
+        
     }
 }
 

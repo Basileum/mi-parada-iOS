@@ -21,6 +21,9 @@ final class ArrivalLiveActivityManager: ObservableObject {
     
     private var currentActivity: Activity<BusArrivalAttributes>? = nil
     
+    private var activeWatchRequest: WatchRequest? = nil
+
+    
     
     func startLiveActivityWidget   (
             watchStop: WatchStop
@@ -34,6 +37,7 @@ final class ArrivalLiveActivityManager: ObservableObject {
         if let state = await buildInitialState(watchStop: watchStop){
             do{
                 
+                
                 let activity = try Activity.request(
                     attributes: BusArrivalAttributes(watchStop: watchStop),
                     content: .init(state: state, staleDate: nil),
@@ -43,6 +47,7 @@ final class ArrivalLiveActivityManager: ObservableObject {
                 logger.info("ArrivalLiveActivityManager: Live Activity created with ID: \(activity.id) and content : \(activity.content)")
                 
                 Task {
+                    
                     for await pushToken in activity.pushTokenUpdates {
                         let pushTokenString = pushToken.reduce("") {
                             $0 + String(format: "%02x", $1)
@@ -50,7 +55,30 @@ final class ArrivalLiveActivityManager: ObservableObject {
                         
                         logger.info("New push token: \(pushTokenString)")
                         
-                        try await self.sendPushToken(pushTokenString: pushTokenString, watchStop: watchStop)
+                        let request = try await self.sendPushToken(pushTokenString: pushTokenString, watchStop: watchStop)
+                        
+                        await MainActor.run {
+                            self.activeWatchRequest = request
+                        }
+                        
+                    }
+                    
+                }
+                
+                Task{
+                    for await state in activity.activityStateUpdates {
+                        switch state {
+                        case .ended, .dismissed:
+                            print("Live Activity is no longer active")
+                            
+                            let request = await MainActor.run { self.activeWatchRequest }
+                            if let request {
+                                await ArrivalWatchService().stopWatchRequest(watchRequest: request)
+                                logger.info("Sent stopWatchRequest to backend")
+                            }
+                        default:
+                            break
+                        }
                     }
                 }
             }
@@ -78,7 +106,7 @@ final class ArrivalLiveActivityManager: ObservableObject {
         logger.debug("ArrivalLiveActivityManager: Activity view state initialized")
     }
     
-    func sendPushToken(pushTokenString: String, watchStop:WatchStop) async throws {
+    func sendPushToken(pushTokenString: String, watchStop:WatchStop) async throws ->  WatchRequest {
         let request = WatchRequest(
             userId: AnonymousUserManager.shared.userID,
             deviceToken: pushTokenString,
@@ -87,6 +115,7 @@ final class ArrivalLiveActivityManager: ObservableObject {
         )
         ArrivalWatchService().sendWatchRequest(watchRequest: request)
         logger.info("ArrivalWatchManager: Watch request sent for token: \(pushTokenString)")
+        return request
     }
     
     func buildInitialState(watchStop: WatchStop) async -> BusArrivalAttributes.ContentState? {
