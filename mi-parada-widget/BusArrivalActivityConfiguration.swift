@@ -10,17 +10,6 @@ import WidgetKit
 import SwiftUI
 
 
-// This struct is not used - we're using BusArrivalAttributes instead
-// struct BusArrivalWidgetAttributes: ActivityAttributes {
-//     public struct ContentState: Codable, Hashable {
-//         // Dynamic stateful properties about your activity go here!
-//         var estimatedTime: Int
-//     }
-//
-//     // Fixed non-changing properties about your activity go here!
-//     var busLine: BusLine
-// }
-
 struct BusArrivalWidgetLiveActivity: Widget {
     
 
@@ -182,22 +171,24 @@ struct BusArrivalWidgetLiveActivity: Widget {
                     .frame(height: 30)
                 }
             } compactLeading: {
-                LineNumberView(busLine: context.attributes.watchStop.busLine)
-                    .frame(width: 30, height: 30)
+                SmallLineNumberView(busLine: context.attributes.watchStop.busLine)
+                    .frame(width: 50, height: 20)
+                    .padding(.leading)
             } compactTrailing: {
                 Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.busEstimatedArrival))
-                    .font(.caption)
+                    .font(.system(size: 5))
                     .fontWeight(.semibold)
                     .foregroundColor(.blue)
             } minimal: {
                 Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.busEstimatedArrival))
-                    .font(.caption2)
+                    .font(.system(size: 11))
                     .fontWeight(.bold)
                     .foregroundColor(.blue)
             }
             .widgetURL(URL(string: "mi-parada://bus-arrival"))
             .keylineTint(Color.blue)
-            
+            .contentMargins(.trailing, 8, for: .expanded)
+            .contentMargins(.all, 20, for: .expanded)
         }
         
     }
@@ -286,7 +277,7 @@ struct BusTimelineView: View {
                 // Progress track
                 RoundedRectangle(cornerRadius: 4)
                     .fill(progressColor)
-                    .frame(width: max(0, UIScreen.main.bounds.width * 0.9  * busProgress), height: 8)
+                    .frame(width: UIScreen.main.bounds.width * 0.9 * (busProgress), height: 8)
                 
                 // All bus icons (main + additional)
                 Group {
@@ -402,7 +393,7 @@ struct BusIconView: View {
                     .font(busSize)
                     .foregroundColor(busColor)
             }
-            .offset(x:UIScreen.main.bounds.width * -(1-progress))
+            .offset(x:UIScreen.main.bounds.width * 0.9 * -(1-progress))
 //            .scaleEffect(1.0 + (animatedProgress * 0.1)) // Slight scale effect as bus gets closer
 //            .opacity(0.8 + (animatedProgress * 0.2)) // Slight opacity change as bus gets closer
         }
@@ -482,9 +473,26 @@ extension BusArrivalAttributes.ContentState {
      }
 }
 
-#Preview("Notification", as: .content, using: BusArrivalAttributes.preview) {
+#Preview("Lock Screen", as: .content, using: BusArrivalAttributes.preview) {
     BusArrivalWidgetLiveActivity()
 } contentStates: {
     BusArrivalAttributes.ContentState.time5mn
-    //BusArrivalAttributes.ContentState.time3mn
+}
+
+#Preview("Dynamic Island - Compact", as: .dynamicIsland(.compact), using: BusArrivalAttributes.preview) {
+    BusArrivalWidgetLiveActivity()
+} contentStates: {
+    BusArrivalAttributes.ContentState.time5mn
+}
+
+#Preview("Dynamic Island - Minimal", as: .dynamicIsland(.minimal), using: BusArrivalAttributes.preview) {
+    BusArrivalWidgetLiveActivity()
+} contentStates: {
+    BusArrivalAttributes.ContentState.time5mn
+}
+
+#Preview("Dynamic Island - Expanded", as: .dynamicIsland(.expanded), using: BusArrivalAttributes.preview) {
+    BusArrivalWidgetLiveActivity()
+} contentStates: {
+    BusArrivalAttributes.ContentState.time5mn
 }
