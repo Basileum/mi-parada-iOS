@@ -14,6 +14,7 @@ struct BusLineSelectionRow: View {
     let onToggle: (Bool) -> Void
     var onBusLineSelected: ((BusLine) -> Void)? = nil
 //    @EnvironmentObject private var watchManager : ArrivalWatchManager
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         HStack(spacing: 8) {
@@ -35,16 +36,11 @@ struct BusLineSelectionRow: View {
                         color: "#007AFF"
                     ))
                     
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(line.label)
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.primary)
                         
-                        Text(destinationName)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
+                    Text(destinationName)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    
                     
                     Spacer()
                     
@@ -66,26 +62,26 @@ struct BusLineSelectionRow: View {
                 }
                 .padding(.vertical, 12)
                 .padding(.horizontal, 16)
-                .background(Color(.systemGray6))
+                .background(Color(.systemGray5).opacity(0.8))
                 .cornerRadius(12)
             }
             .buttonStyle(PlainButtonStyle())
             
             // Navigation button
-            Button(action: {
-                logger.info("BusStopDetailPopup: User tapped on bus line \(line.label) in watch selection")
-                let busLine = BusLine(
-                    label: line.label,
-                    externalFrom: line.nameA,
-                    externalTo: line.nameB,
-                    color: "#007AFF"
-                )
-                onBusLineSelected?(busLine)
-            }) {
-                Image(systemName: "info.circle")
-                    .font(.title2)
-                    .foregroundColor(.blue)
-            }
+//            Button(action: {
+//                logger.info("BusStopDetailPopup: User tapped on bus line \(line.label) in watch selection")
+//                let busLine = BusLine(
+//                    label: line.label,
+//                    externalFrom: line.nameA,
+//                    externalTo: line.nameB,
+//                    color: "#007AFF"
+//                )
+//                onBusLineSelected?(busLine)
+//            }) {
+//                Image(systemName: "info.circle")
+//                    .font(.title2)
+//                    .foregroundColor(.blue)
+//            }
         }
     }
     
