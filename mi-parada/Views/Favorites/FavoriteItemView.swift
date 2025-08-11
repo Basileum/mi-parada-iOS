@@ -12,10 +12,12 @@ struct FavoriteItemView: View {
     
     var body: some View {
         VStack{
-            Text(favorite.stop.name)
-                .foregroundColor(.white)
-                .font(.headline)
-                .padding(.horizontal)
+            HStack {
+                Text(favorite.stop.name)
+                    .font(.headline)
+                    .padding(.horizontal)
+                Spacer()
+            }
                 
             let busLines = Array(favorite.busLines)
             VStack{
@@ -31,13 +33,12 @@ struct FavoriteItemView: View {
                     }
                 }
             }
-                .foregroundColor(.white)
                 .font(.caption)
                 .padding(.horizontal)
         }
         .frame(height: 85)
         .frame(maxWidth: .infinity)
-        .background(Color.gray)
+        .background(Color(.systemGray6))
         .cornerRadius(10)
     }
     

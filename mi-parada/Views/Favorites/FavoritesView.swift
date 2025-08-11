@@ -28,19 +28,10 @@ struct FavoritesView: View {
                 Grid(alignment: .top, horizontalSpacing: 16, verticalSpacing: 16) {
                     let stopsArray = Array(favoritesBusStop)
                     
-                    ForEach(stopsArray.chunked(into: 2), id: \.self) { rowItems in
-                        GridRow {
-                            ForEach(rowItems, id: \.self) { stop in
-                                FavoriteItemView(favorite: stop)
-                                    .frame(maxWidth: .infinity)
-                            }
-                            // Fill empty cell if odd number of items
-                            if rowItems.count < 2 {
-                                Spacer()
-                            }
+                    ForEach(stopsArray, id: \.self) { stop in                        FavoriteItemView(favorite: stop)
+                            .frame(maxWidth: .infinity)
                         }
                     }
-                }
                 .padding(.horizontal, 20)
                 
                 Spacer(minLength: 0)
