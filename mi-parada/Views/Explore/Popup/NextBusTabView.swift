@@ -62,12 +62,13 @@ struct NextBusTabView: View {
             } else {
                 ScrollView {
                     LazyVStack(spacing: 12) {
-                        ForEach(groupedArrivals) { groupedArrival in
+                        ForEach(groupedArrivals.sortedByBusLineLabel()) { groupedArrival in
                             GroupedArrivalRowView(groupedArrival: groupedArrival, onBusLineSelected: onBusLineSelected)
                         }
                     }
                     .padding(.horizontal, 20)
                 }
+                .padding(.bottom, 40)
             }
         }
         .padding(.top, 16)
