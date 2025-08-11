@@ -30,7 +30,7 @@ struct InfoTabView: View {
                 
                 // Lines list
                 VStack(spacing: 8) {
-                    ForEach(stop.lines) { line in
+                    ForEach(stop.lines.sortedByBusLineLabel()) { line in
                         BusLineItemView(line: line, onBusLineSelected: onBusLineSelected)
                     }
                 }

@@ -36,27 +36,7 @@ struct WatchSelectionView: View {
                 ScrollView {
                     LazyVStack(spacing: 12) {
                         ForEach(
-                            stop.lines.sorted { a, b in
-                                let pa = a.label.splitPrefixAndNumber()
-                                let pb = b.label.splitPrefixAndNumber()
-                                
-                                // 1. Day lines (no prefix) before Night lines ("N")
-                                let isANight = pa.prefix == "N"
-                                let isBNight = pb.prefix == "N"
-                                if isANight != isBNight {
-                                    return !isANight && isBNight
-                                }
-                                
-                                // 2. Same prefix → sort by numeric value
-                                if pa.prefix != pb.prefix {
-                                    return pa.prefix < pb.prefix
-                                } else if pa.number != pb.number {
-                                    return pa.number < pb.number
-                                } else {
-                                    // 3. Same number → "001" before "1"
-                                    return pa.originalNumber.count > pb.originalNumber.count
-                                }
-                            }
+                            stop.lines.sortedByBusLineLabel()
                         ) { line in
                             BusLineSelectionRow(
                                 line: line,
@@ -184,25 +164,3 @@ struct WatchSelectionView: View {
         }
     }
 }
-
-extension String {
-    func splitPrefixAndNumber() -> (prefix: String, number: Int, originalNumber: String) {
-        var prefix = ""
-        var digits = ""
-        for char in self {
-            if char.isNumber {
-                digits.append(char)
-            } else if digits.isEmpty {
-                prefix.append(char)
-            } else {
-                prefix.append(char) // letters after digits (rare) still in prefix
-            }
-        }
-        return (
-            prefix: prefix.uppercased(),
-            number: Int(digits) ?? Int.max,
-            originalNumber: digits
-        )
-    }
-}
-

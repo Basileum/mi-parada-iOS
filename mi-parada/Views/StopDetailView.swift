@@ -29,6 +29,28 @@ struct StopDetailView: View {
         }
     }
     
+    private var sortedGroupedArrivals: [(line: String, arrivals: [BusArrival])] {
+        groupedArrivals
+            .map { (line: $0.key, arrivals: $0.value) } // rename tuple labels
+            .sorted { a, b in
+                let pa = a.line.splitPrefixAndNumber()
+                let pb = b.line.splitPrefixAndNumber()
+                
+                let isANight = pa.prefix == "N"
+                let isBNight = pb.prefix == "N"
+                if isANight != isBNight {
+                    return !isANight && isBNight
+                }
+                if pa.prefix != pb.prefix {
+                    return pa.prefix < pb.prefix
+                } else if pa.number != pb.number {
+                    return pa.number < pb.number
+                } else {
+                    return pa.originalNumber.count > pb.originalNumber.count
+                }
+            }
+    }
+    
     
     var body: some View {
         VStack(spacing: 0) {
@@ -135,8 +157,8 @@ struct StopDetailView: View {
                     } else {
                         ScrollView {
                             LazyVStack(spacing: 12) {
-                                ForEach(Array(groupedArrivals.keys.sorted()), id: \.self) { lineId in
-                                    if let lineArrivals = groupedArrivals[lineId],
+                                let sortedLineIds = sortBusLineLabels(Array(groupedArrivals.keys))
+                                ForEach(sortedLineIds, id: \.self) { lineId in                                    if let lineArrivals = groupedArrivals[lineId],
                                        let line = busLinesManager.getBusLine(id: lineId) {
                                         HStack {
                                             LineNumberView(busLine: line)
