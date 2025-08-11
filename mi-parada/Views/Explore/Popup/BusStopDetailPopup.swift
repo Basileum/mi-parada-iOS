@@ -381,16 +381,27 @@ struct GroupedArrivalRowView: View {
 
     
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 0) {
             // Line number
-            LineNumberView(busLine: BusLine(
-                label: groupedArrival.line,
-                externalFrom: "",
-                externalTo: "",
-                color: "#007AFF"
-            ))
+            HStack(spacing:0) {
+                Spacer()
+
+                LineNumberView(busLine: BusLine(
+                    label: groupedArrival.line,
+                    externalFrom: "",
+                    externalTo: "",
+                    color: "#007AFF"
+                ))
+                
+                Spacer()
+
+            }
+            .frame(width: 85)
+        
             
-            VStack(alignment: .leading, spacing: 4) {
+            
+            
+            VStack(alignment: .leading, spacing: 1) {
                 Text(groupedArrival.destination)
                     .font(.caption)
                     .fontWeight(.medium)
@@ -402,13 +413,14 @@ struct GroupedArrivalRowView: View {
             // Arrival times
             VStack(alignment: .trailing, spacing: 2) {
                 Text(groupedArrival.times)
-                    .font(.headline)
+                    .font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundColor(.blue)
             }
+            .frame(width: 120)
         }
         .padding(.vertical, 8)
-        .padding(.horizontal, 12)
+        .padding(.horizontal, 3)
         .background(Color(.systemGray6))
         .cornerRadius(8)
         .onTapGesture {
