@@ -9,8 +9,8 @@ import SwiftUI
 import MapKit
 
 struct BusLineDetailView: View {
-    let busLine: BusLine
-
+    @State var busLine: BusLine
+    
     @State private var overlays: [MKOverlay] = []
     @State private var annotations: [String:[MKAnnotation]] = [:]
     @State private var isLoading = true
@@ -22,6 +22,7 @@ struct BusLineDetailView: View {
     @State private var selectedTab = 0
     
     @EnvironmentObject var favorites: FavoritesManager
+    @EnvironmentObject var busLinesManager : BusLinesManager
     
     @Binding var path: NavigationPath
 
@@ -158,6 +159,9 @@ struct BusLineDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             loadGeoData()
+            if(busLine.externalFrom.isEmpty){
+                busLine = busLinesManager.getBusLine(id: busLine.label)!
+            }
         }
         .onChange(of: overlayController) { controller in
             guard let controller else { return }
