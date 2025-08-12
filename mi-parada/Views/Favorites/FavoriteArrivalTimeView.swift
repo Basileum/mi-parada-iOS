@@ -22,7 +22,9 @@ struct FavoriteArrivalTimeView: View {
                 let arrivalTimes = loadArrivals.map {
                     ArrivalFormatsTime.simpleFormatArrivalTime($0.estimateArrive)
                 }.joined(separator: ", ")
-                
+                Text(loadArrivals.first?.destination ?? "")
+                    .font(.caption)
+                Spacer()
                 Text(arrivalTimes)
             }
             else {
