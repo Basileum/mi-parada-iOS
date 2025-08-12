@@ -226,7 +226,8 @@ struct BusStopDetailPopup: View {
                     label: line.label,
                     externalFrom: line.nameA,
                     externalTo: line.nameB,
-                    color: "#007AFF"
+                    colorBackground: "#00aecf",
+                    colorForeground: "#ffffff"
                 )
             })
         )
@@ -247,7 +248,8 @@ struct BusStopDetailPopup: View {
                     label: line.label,
                     externalFrom: line.nameA,
                     externalTo: line.nameB,
-                    color: "#007AFF"
+                    colorBackground: "#00aecf",
+                    colorForeground: "#ffffff"
                 )
             })
         )
@@ -271,7 +273,8 @@ struct BusLineItemView: View {
                 label: line.label,
                 externalFrom: line.nameA,
                 externalTo: line.nameB,
-                color: "#007AFF" // Default blue color
+                colorBackground: "#00aecf",
+                colorForeground: "#ffffff"
             )
         }
         
@@ -296,7 +299,8 @@ struct BusLineItemView: View {
                 label: line.label,
                 externalFrom: line.nameA,
                 externalTo: line.nameB,
-                color: "#007AFF"
+                colorBackground: "#00aecf",
+                colorForeground: "#ffffff"
             )
             nav.selectedBusLine = busLine
             nav.selectedTab = 1
@@ -390,7 +394,8 @@ struct GroupedArrivalRowView: View {
                     label: groupedArrival.line,
                     externalFrom: "",
                     externalTo: "",
-                    color: "#007AFF"
+                    colorBackground: "#00aecf",
+                    colorForeground: "#ffffff"
                 ))
                 
                 Spacer()
@@ -429,7 +434,8 @@ struct GroupedArrivalRowView: View {
                 label: groupedArrival.line,
                 externalFrom: "",
                 externalTo: "",
-                color: "#007AFF"
+                colorBackground: "#00aecf",
+                colorForeground: "#ffffff"
             )
             nav.selectedBusLine = busLine
             nav.selectedTab = 1
@@ -448,7 +454,8 @@ struct ArrivalRowView: View {
                 label: arrival.line,
                 externalFrom: "",
                 externalTo: "",
-                color: "#007AFF"
+                colorBackground: "#00aecf",
+                colorForeground: "#ffffff"
             ))
             
             VStack(alignment: .leading, spacing: 4) {

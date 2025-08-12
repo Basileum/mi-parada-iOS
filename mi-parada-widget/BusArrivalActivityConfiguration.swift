@@ -446,7 +446,8 @@ extension BusArrivalAttributes {
                     label: "24",
                     externalFrom: "from",
                     externalTo: "to",
-                    color: "#00aecf"),
+                    colorBackground: "#00aecf",
+                    colorForeground: "#ffffff"),
                 busStop: BusStop(
                     id: 2185,
                     name: "Test",

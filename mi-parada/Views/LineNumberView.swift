@@ -13,13 +13,13 @@ struct LineNumberView: View {
     var body: some View {
         VStack{
             Text(busLine.label)
-                .foregroundColor(.white)
+                .foregroundColor(Color(hex:busLine.colorForeground))
                 .font(.headline)
                 .padding(.horizontal)
                 
         }
         .frame(/*width:70,*/height: 20)
-        .background(Color(hex:busLine.color))
+        .background(Color(hex:busLine.colorBackground))
         .cornerRadius(5)
     }
 }
@@ -29,17 +29,20 @@ struct LineNumberView: View {
         label: "24",
         externalFrom: "from",
         externalTo: "to",
-        color: "#00aecf"))
+        colorBackground: "#00aecf",
+        colorForeground: "#ffffff"))
     
     LineNumberView(busLine: BusLine(
         label: "C02",
         externalFrom: "from",
         externalTo: "to",
-        color: "#00aecf"))
+        colorBackground: "#00aecf",
+        colorForeground: "#ffffff"))
     
     LineNumberView(busLine: BusLine(
         label: "001",
         externalFrom: "from",
         externalTo: "to",
-        color: "#00aecf"))
+        colorBackground: "#00aecf",
+        colorForeground: "#ffffff"))
 }

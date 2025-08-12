@@ -13,13 +13,13 @@ struct SmallLineNumberView: View {
     var body: some View {
         VStack{
             Text(busLine.label)
-                .foregroundColor(.white)
+                .foregroundColor(Color(hex:busLine.colorForeground))
                 .font(.system(size: 12))
                 .padding(.horizontal)
                 
         }
         .frame(/*width:80,*/height: 20)
-        .background(Color(hex:busLine.color))
+        .background(Color(hex:busLine.colorBackground))
         .cornerRadius(5)
     }
 }
@@ -30,17 +30,21 @@ struct SmallLineNumberView: View {
         label: "24",
         externalFrom: "from",
         externalTo: "to",
-        color: "#00aecf"))
+        colorBackground: "#00aecf",
+        colorForeground: "#ffffff"
+    ))
     
     SmallLineNumberView(busLine: BusLine(
         label: "C02",
         externalFrom: "from",
         externalTo: "to",
-        color: "#00aecf"))
+        colorBackground: "#00aecf",
+        colorForeground: "#ffffff"))
     
     SmallLineNumberView(busLine: BusLine(
         label: "001",
         externalFrom: "from",
         externalTo: "to",
-        color: "#00aecf"))
+        colorBackground: "#00aecf",
+        colorForeground: "#ffffff"))
 }

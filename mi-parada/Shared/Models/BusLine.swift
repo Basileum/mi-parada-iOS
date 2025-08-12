@@ -18,5 +18,6 @@ struct BusLine : Identifiable, Codable, Hashable{
     let label: String
     let externalFrom: String
     let externalTo: String
-    let color: String
+    let colorBackground: String
+    let colorForeground: String
 }

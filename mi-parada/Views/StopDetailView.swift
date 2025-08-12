@@ -20,7 +20,7 @@ struct StopDetailView: View {
     @State private var timer = Timer.publish(every: 15, on: .main, in: .common).autoconnect()
 
     
-    let busLineExemple : BusLine = BusLine(label: "24", externalFrom: "from", externalTo: "to", color: "#00aecf")
+    let busLineExemple : BusLine = BusLine(label: "24", externalFrom: "from", externalTo: "to", colorBackground: "#00aecf",colorForeground: "#ffffff")
     
     // Group arrivals by line
     private var groupedArrivals: [String: [BusArrival]] {

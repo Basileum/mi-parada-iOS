@@ -64,7 +64,7 @@ extension Array {
             )
         )
     
-    let bl = BusLine(label: "24", externalFrom: "from", externalTo: "to", color: "blue")
+    let bl = BusLine(label: "24", externalFrom: "from", externalTo: "to", colorBackground: "#00aecf", colorForeground: "#ffffff")
     
     let fbs = FavoritesBusStop(stop: bs, busLines: [bl])
     

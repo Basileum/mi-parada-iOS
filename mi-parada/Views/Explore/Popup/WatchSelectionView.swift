@@ -145,7 +145,8 @@ struct WatchSelectionView: View {
                     label: line.label,
                     externalFrom: line.nameA,
                     externalTo: line.nameB,
-                    color: "#007AFF"
+                    colorBackground: "#00aecf",
+                    colorForeground: "#ffffff"
                 )
                 
                 logger.info("BusStopDetailPopup: Starting to watch line \(line.label) for stop \(stop.stopName)")

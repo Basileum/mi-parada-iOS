@@ -33,7 +33,8 @@ struct BusLineSelectionRow: View {
                         label: line.label,
                         externalFrom: line.nameA,
                         externalTo: line.nameB,
-                        color: "#007AFF"
+                        colorBackground: "#00aecf",
+                        colorForeground: "#ffffff"
                     ))
                     
                         
