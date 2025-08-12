@@ -23,6 +23,6 @@ struct FindBusLinesUIView: View {
     
 
 
-#Preview {
-    FindBusLinesUIView().environmentObject(FavoritesManager())
-}
+//#Preview {
+//    FindBusLinesUIView().environmentObject(FavoritesManager())
+//}

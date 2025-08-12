@@ -11,7 +11,7 @@ import MapKit
 struct BusStopDetailPopup: View {
     let stop: NearStopData
     @Binding var isPresented: Bool
-    @StateObject private var favoritesManager = FavoritesManager()
+    @EnvironmentObject var favorites: FavoritesManager
     @State private var selectedTab = 0
     @State private var dragOffset: CGFloat = 0
     @State private var isDragging = false
@@ -231,7 +231,7 @@ struct BusStopDetailPopup: View {
                 )
             })
         )
-        return favoritesManager.isFavorite(favoriteStop)
+        return favorites.isFavorite(favoriteStop)
     }
     
     // MARK: - Helper Functions
@@ -253,7 +253,7 @@ struct BusStopDetailPopup: View {
                 )
             })
         )
-        favoritesManager.toggle(favoriteStop)
+        favorites.toggle(favoriteStop)
         
         
     }

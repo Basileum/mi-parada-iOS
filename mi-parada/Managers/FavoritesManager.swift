@@ -8,6 +8,8 @@ import Foundation
 
 
 class FavoritesManager: ObservableObject {
+    private let toastManager: ToastManager
+    
     @Published private(set) var favoritesBusStop: Set<FavoritesBusStop> = []
     
     private let userDefaults = UserDefaults(suiteName: "group.baztech.mi-parada") // ← Use your real group ID
@@ -15,7 +17,8 @@ class FavoritesManager: ObservableObject {
 
     private let storageKey = "favoriteStops"
 
-    init() {
+    init(toastManager:ToastManager) {
+        self.toastManager = toastManager
         logger.info("FavoritesManager: Initializing favorites manager")
         loadFavorites()
         logger.info("FavoritesManager: Loaded \(favoritesBusStop.count) favorite stops")
@@ -27,15 +30,20 @@ class FavoritesManager: ObservableObject {
         return isFav
     }
 
-    func toggle(_ f: FavoritesBusStop) {
+    func toggle(_ f: FavoritesBusStop) -> FavoriteActionResult {
         if favoritesBusStop.contains(f) {
             favoritesBusStop.remove(f)
             logger.info("FavoritesManager: Removed stop \(f.stop.name) from favorites")
+            saveFavorites()
+            toastManager.show(message: "Bus stop removed from favorites.")
+            return .removed
         } else {
             favoritesBusStop.insert(f)
             logger.info("FavoritesManager: Added stop \(f.stop.name) to favorites")
+            saveFavorites()
+            toastManager.show(message: "Bus stop added to favorites!")
+            return .added
         }
-        saveFavorites()
     }
 
     private func loadFavorites() {
@@ -56,5 +64,10 @@ class FavoritesManager: ObservableObject {
         } else {
             logger.error("FavoritesManager: Failed to encode favorites for saving")
         }
+    }
+    
+    enum FavoriteActionResult {
+        case added
+        case removed
     }
 }

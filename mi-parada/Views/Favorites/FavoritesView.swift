@@ -52,25 +52,25 @@ extension Array {
 }
 
 
-#Preview {
-    var favoritesManager: FavoritesManager = FavoritesManager()
-    
-    let bs = BusStop(
-        id: 2185,
-        name: "Test",
-        coordinate: Coordinate(
-            latitude: 40.39137392789779,
-            longitude: -3.666371843698435
-            )
-        )
-    
-    let bl = BusLine(label: "24", externalFrom: "from", externalTo: "to", colorBackground: "#00aecf", colorForeground: "#ffffff")
-    
-    let fbs = FavoritesBusStop(stop: bs, busLines: [bl])
-    
-    
-    FavoritesView()
-        .environmentObject(favoritesManager)
-        .environmentObject(ArrivalWatchManager())
-        .environmentObject(BusLinesManager())
-}
+//#Preview {
+//    var favoritesManager: FavoritesManager = FavoritesManager()
+//    
+//    let bs = BusStop(
+//        id: 2185,
+//        name: "Test",
+//        coordinate: Coordinate(
+//            latitude: 40.39137392789779,
+//            longitude: -3.666371843698435
+//            )
+//        )
+//    
+//    let bl = BusLine(label: "24", externalFrom: "from", externalTo: "to", colorBackground: "#00aecf", colorForeground: "#ffffff")
+//    
+//    let fbs = FavoritesBusStop(stop: bs, busLines: [bl])
+//    
+//    
+//    FavoritesView()
+//        .environmentObject(favoritesManager)
+//        .environmentObject(ArrivalWatchManager())
+//        .environmentObject(BusLinesManager())
+//}
