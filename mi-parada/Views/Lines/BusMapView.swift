@@ -11,15 +11,18 @@ import MapKit
 struct BusMapView: UIViewRepresentable {
     @Binding var overlayController: BusOverlayViewController?
     @Binding var fetchPolylines: [String:[MKMultiPolyline]]
-    @Binding var fetchAnnotations: [String:[MKAnnotation]]
+    @Binding var fetchAnnotations: [String:[BusStopAnnotation]]
     @Binding var direction: String
-    
+
     var busLine: BusLine
+    
+    @Binding var path: NavigationPath
+
     //@Binding var selectedAnnotation : MKAnnotation?
     
     func makeCoordinator() -> Coordinator {
         print("✅ makeCoordinator called")
-        return Coordinator(busLine: busLine, fetchAnnotations: $fetchAnnotations, direction: $direction)
+        return Coordinator(busLine: busLine, fetchAnnotations: $fetchAnnotations, direction: $direction, path: $path)
     }
 
     func makeUIView(context: Context) -> MKMapView {
@@ -63,16 +66,19 @@ struct BusMapView: UIViewRepresentable {
 
     class Coordinator: NSObject, MKMapViewDelegate {
         var busLine : BusLine
-        @Binding var fetchAnnotations: [String:[MKAnnotation]]
+        @Binding var fetchAnnotations: [String:[BusStopAnnotation]]
         @Binding var direction: String
+        @Binding var path: NavigationPath
+
         
         // Zoom threshold to determine when to show all annotations
         private let zoomThreshold: Double = 0.01 // Adjust this value as needed
         
-        init(busLine: BusLine, fetchAnnotations: Binding<[String:[MKAnnotation]]>, direction: Binding<String>) {
+        init(busLine: BusLine, fetchAnnotations: Binding<[String:[BusStopAnnotation]]>, direction: Binding<String>, path: Binding<NavigationPath>) {
             self.busLine = busLine
             self._fetchAnnotations = fetchAnnotations
             self._direction = direction
+            self._path = path
         }
         
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
@@ -104,14 +110,16 @@ struct BusMapView: UIViewRepresentable {
                         coordinate: firstAnnotation.coordinate,
                         title: firstAnnotation.title ?? "Start",
                         subtitle: firstAnnotation.subtitle ?? nil,
-                        isStart: true
+                        isStart: true,
+                        id: firstAnnotation.id
                     )
                     
                     let endAnnotation = BusStopAnnotation(
                         coordinate: lastAnnotation.coordinate,
                         title: lastAnnotation.title ?? "End",
                         subtitle: lastAnnotation.subtitle ?? nil,
-                        isStart: false
+                        isStart: false,
+                        id: firstAnnotation.id
                     )
                     
                     mapView.addAnnotation(startAnnotation)
@@ -123,7 +131,8 @@ struct BusMapView: UIViewRepresentable {
                         coordinate: annotation.coordinate,
                         title: annotation.title ?? "Start",
                         subtitle: annotation.subtitle ?? nil,
-                        isStart: true
+                        isStart: true,
+                        id: annotation.id
                     )
                     mapView.addAnnotation(startAnnotation)
                 }
@@ -153,6 +162,14 @@ struct BusMapView: UIViewRepresentable {
                 annotation: annotation,
                 reuseIdentifier: "BusStopAnnotation")
             annotationView.canShowCallout = true
+            
+            // Add a right callout accessory button with an icon
+            let button = UIButton(type: .detailDisclosure) // or custom button type
+            // Customize the button with an icon if you want
+            button.setImage(UIImage(systemName: "arrow.right.circle"), for: .normal)
+            annotationView.rightCalloutAccessoryView = button
+            
+           // let busStop: BusStop = BusStop(name: "Test")
             
             if let busStopAnnotation = annotation as? BusStopAnnotation {
                 // Custom annotation for start/end points
@@ -198,7 +215,23 @@ struct BusMapView: UIViewRepresentable {
                 
             return annotationView
         }
+        
+        func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+            
+            guard let busStopAnnotation = view.annotation as? BusStopAnnotation else {return}
+            
+            let busStop : BusStop = BusStop(
+                id: busStopAnnotation.id,
+                name: busStopAnnotation.title ?? "",
+                clllocationCordinate2D: busStopAnnotation.coordinate)
+            
+            DispatchQueue.main.async {
+                self.path.append(busStop) // Push to NavigationStack path
+            }
+        
+        }
     }
+    
 }
 
 // Custom annotation class for start/end points
@@ -207,12 +240,14 @@ class BusStopAnnotation: NSObject, MKAnnotation {
     let title: String?
     let subtitle: String?
     let isStart: Bool
+    let id: Int
     
-    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?, isStart: Bool) {
+    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?, isStart: Bool, id:Int) {
         self.coordinate = coordinate
         self.title = title
         self.subtitle = subtitle
         self.isStart = isStart
+        self.id = id
         super.init()
     }
 }

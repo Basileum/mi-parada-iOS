@@ -4,8 +4,8 @@ import MapKit
 class BusLineMapService {
     
     private(set) var overlays = [MKOverlay]()
-    private(set) var annotations = [MKAnnotation]()
-    static func fetchGeoJSON(forLabel label: String, completion: @escaping (Result<([String:[MKMultiPolyline]], [String:[MKAnnotation]], [String:[BusStop]]), Error>) -> Void) {
+    //private(set) var annotations = [MKAnnotation]()
+    static func fetchGeoJSON(forLabel label: String, completion: @escaping (Result<([String:[MKMultiPolyline]], [String:[BusStopAnnotation]], [String:[BusStop]]), Error>) -> Void) {
         logger.info("BusLineMapService: Fetching GeoJSON for line \(label)")
         let baseURL = Bundle.main.infoDictionary?["API_BASE_URL"] as? String
         
@@ -52,7 +52,7 @@ class BusLineMapService {
 
                 let decoder = MKGeoJSONDecoder()
                 var polylines: [String : [MKMultiPolyline]] = [:]
-                var annotations: [String :[MKAnnotation]] = [:]
+                var annotations: [String :[BusStopAnnotation]] = [:]
                 var lineStops: [String: [BusStop]] = [:]
 
                 // Decode both directions for itinerary
@@ -93,11 +93,12 @@ class BusLineMapService {
                                         let name = propsJson["stopName"] as? String,
                                         let id = propsJson["stopNum"] as? Int   {
                                         logger.debug("BusLineMapService: Found stop \(name) (ID: \(id)) for direction \(key)")
+                                        let busStopAnnotation = BusStopAnnotation.init(coordinate: annotation.coordinate, title: name, subtitle: nil, isStart: false, id: id)
                                         annotation.title = name
                                         let stop = BusStop(id: id, name: name, clllocationCordinate2D: annotation.coordinate)
                                         lineStops[key]?.append(stop)
+                                        annotations[key]?.append(busStopAnnotation)
                                     }
-                                    annotations[key]?.append(annotation)
                                 }
                             }
                         }

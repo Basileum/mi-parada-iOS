@@ -12,7 +12,7 @@ struct BusLineDetailView: View {
     @State var busLine: BusLine
     
     @State private var overlays: [MKOverlay] = []
-    @State private var annotations: [String:[MKAnnotation]] = [:]
+    @State private var annotations: [String:[BusStopAnnotation]] = [:]
     @State private var isLoading = true
     @State private var fetchedPolylines: [String:[MKMultiPolyline]] = [:]
     @State private var overlayController: BusOverlayViewController?
@@ -71,12 +71,15 @@ struct BusLineDetailView: View {
                     .padding(.horizontal)
                     .padding(.top)
             } else {
-                BusMapView(overlayController: $overlayController, fetchPolylines: $fetchedPolylines, fetchAnnotations: $annotations, direction: $direction, busLine: busLine )
+                BusMapView(overlayController: $overlayController, fetchPolylines: $fetchedPolylines, fetchAnnotations: $annotations, direction: $direction, busLine: busLine, path: $path)
                     .edgesIgnoringSafeArea(.all)
                     .frame(height: 200)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .padding(.horizontal)
                     .padding(.top)
+                    .navigationDestination(for: BusStop.self) { busStop in
+                        StopDetailView(stop: busStop)
+                    }
             }
             
             // Segmented control buttons just below the map
