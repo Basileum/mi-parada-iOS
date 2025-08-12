@@ -57,6 +57,7 @@ struct BusLineRouteView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        .padding(.top, 10)
     }
     
     private func startScrolling() {
