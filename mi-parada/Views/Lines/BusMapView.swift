@@ -134,14 +134,14 @@ struct BusMapView: UIViewRepresentable {
             print("🧩 mapView(_:rendererFor:) called with overlay: \(overlay)")
             if let polyline = overlay as? MKPolyline {
                 let renderer = MKPolylineRenderer(polyline: polyline)
-                renderer.strokeColor = .blue
+                renderer.strokeColor = UIColor(Color(hex:busLine.colorBackground))
                 renderer.lineWidth = 3
                 return renderer
             } else if let multi = overlay as? MKMultiPolyline {
                 print("Coordinator - MultiPolyline∫")
                 print(multi)
                 let renderer = MKMultiPolylineRenderer(multiPolyline: multi)
-                renderer.strokeColor = .blue
+                renderer.strokeColor = UIColor(Color(hex:busLine.colorBackground))
                 renderer.lineWidth = 3
                 return renderer
             }
@@ -156,13 +156,16 @@ struct BusMapView: UIViewRepresentable {
             
             if let busStopAnnotation = annotation as? BusStopAnnotation {
                 // Custom annotation for start/end points
+                let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold)
                 if busStopAnnotation.isStart {
-                    annotationView.image = UIImage(systemName: "flag.fill")?
-                        .withTintColor(.green, renderingMode: .alwaysOriginal)
+                    annotationView.image = UIImage(systemName: "flag.fill", withConfiguration: config)?
+                        .withTintColor(.green, renderingMode: .alwaysTemplate)
                 } else {
                     annotationView.image = UIImage(systemName: "flag.checkered")?
-                        .withTintColor(.blue, renderingMode: .alwaysOriginal)
+                        .withTintColor(.blue, renderingMode: .alwaysTemplate)
                 }
+                annotationView.backgroundColor = .clear
+                annotationView.isOpaque = false
             } else {
                 // Regular annotation - use circle icon for zoomed in view
                 annotationView.image = UIImage(systemName: "circle.fill")?
@@ -173,7 +176,7 @@ struct BusMapView: UIViewRepresentable {
             
             if let busStopAnnotation = annotation as? BusStopAnnotation {
                 // Custom annotation for start/end points - use white background
-                annotationView.image = BackgroundPointMap.imageWithBackground(image: annotationView.image!, backgroundColor: UIColor(.white))
+                annotationView.image = BackgroundPointMap.imageWithBackground(image: annotationView.image!, backgroundColor: UIColor(.clear))
                 annotationView.image = UIGraphicsImageRenderer(size: size).image {
                     _ in annotationView.image!.draw(in: CGRect(origin: .zero, size: size))
                 }
@@ -183,7 +186,7 @@ struct BusMapView: UIViewRepresentable {
                     let rect = CGRect(origin: .zero, size: size)
                     
                     // Draw blue border circle
-                    context.cgContext.setFillColor(UIColor.blue.cgColor)
+                    context.cgContext.setFillColor(UIColor(Color(hex:busLine.colorBackground)).cgColor)
                     context.cgContext.fillEllipse(in: rect)
                     
                     // Draw white inner circle
