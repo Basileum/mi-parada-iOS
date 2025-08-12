@@ -264,46 +264,41 @@ struct BusLineItemView: View {
     let line: NearStopLine
     var onBusLineSelected: ((BusLine) -> Void)? = nil
     @EnvironmentObject var nav: NavigationCoordinator
+    @EnvironmentObject var busLinesManager : BusLinesManager
 
     
     var body: some View {
         // Convert NearStopLine to BusLine for LineNumberView
-        var busLine: BusLine {
-            BusLine(
-                label: line.label,
-                externalFrom: line.nameA,
-                externalTo: line.nameB,
-                colorBackground: "#00aecf",
-                colorForeground: "#ffffff"
-            )
-        }
+        let busLine = busLinesManager.getBusLine(id: line.label)
         
-        HStack(spacing: 12) {
-            // Line number with fixed width for alignment
-            LineNumberView(busLine: busLine)
-                .frame(width: 70, alignment: .center)
-            
-            // Destination name based on "to" attribute
-            Text(destinationName)
-                .font(.subheadline)
-                .foregroundColor(.primary)
-                .lineLimit(2)
-                .multilineTextAlignment(.leading)
-            
-            Spacer()
-        }
-        .padding(.vertical, 6)
-        .onTapGesture {
-            logger.info("BusStopDetailPopup: User tapped on bus line \(line.label)")
-            let busLine = BusLine(
-                label: line.label,
-                externalFrom: line.nameA,
-                externalTo: line.nameB,
-                colorBackground: "#00aecf",
-                colorForeground: "#ffffff"
-            )
-            nav.selectedBusLine = busLine
-            nav.selectedTab = 1
+        if (busLine != nil) {
+            HStack(spacing: 12) {
+                // Line number with fixed width for alignment
+                LineNumberView(busLine: busLine!)
+                    .frame(width: 70, alignment: .center)
+                
+                // Destination name based on "to" attribute
+                Text(destinationName)
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                
+                Spacer()
+            }
+            .padding(.vertical, 6)
+            .onTapGesture {
+                logger.info("BusStopDetailPopup: User tapped on bus line \(line.label)")
+                let busLine = BusLine(
+                    label: line.label,
+                    externalFrom: line.nameA,
+                    externalTo: line.nameB,
+                    colorBackground: "#00aecf",
+                    colorForeground: "#ffffff"
+                )
+                nav.selectedBusLine = busLine
+                nav.selectedTab = 1
+            }
         }
     }
     
@@ -382,63 +377,61 @@ struct GroupedArrivalRowView: View {
     let groupedArrival: GroupedArrival
     var onBusLineSelected: ((BusLine) -> Void)? = nil
     @EnvironmentObject var nav: NavigationCoordinator
+    @EnvironmentObject var busLinesManager : BusLinesManager
 
     
     var body: some View {
-        HStack(spacing: 0) {
-            // Line number
-            HStack(spacing:0) {
+        let line = busLinesManager.getBusLine(id: groupedArrival.line)
+        if line != nil{
+            
+            HStack(spacing: 0) {
+                // Line number
+                HStack(spacing:0) {
+                    Spacer()
+                    LineNumberView(busLine: line!)
+                    
+                    Spacer()
+                    
+                }
+                .frame(width: 85)
+                
+                
+                
+                
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(groupedArrival.destination)
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundColor(.primary)
+                }
+                
                 Spacer()
-
-                LineNumberView(busLine: BusLine(
+                
+                // Arrival times
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text(groupedArrival.times)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.blue)
+                }
+                .frame(width: 120)
+            }
+            .padding(.vertical, 8)
+            .padding(.horizontal, 3)
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
+            .onTapGesture {
+                logger.info("BusStopDetailPopup: User tapped on bus line \(groupedArrival.line)")
+                let busLine = BusLine(
                     label: groupedArrival.line,
                     externalFrom: "",
                     externalTo: "",
                     colorBackground: "#00aecf",
                     colorForeground: "#ffffff"
-                ))
-                
-                Spacer()
-
+                )
+                nav.selectedBusLine = busLine
+                nav.selectedTab = 1
             }
-            .frame(width: 85)
-        
-            
-            
-            
-            VStack(alignment: .leading, spacing: 1) {
-                Text(groupedArrival.destination)
-                    .font(.caption)
-                    .fontWeight(.medium)
-                    .foregroundColor(.primary)
-            }
-            
-            Spacer()
-            
-            // Arrival times
-            VStack(alignment: .trailing, spacing: 2) {
-                Text(groupedArrival.times)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.blue)
-            }
-            .frame(width: 120)
-        }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 3)
-        .background(Color(.systemGray6))
-        .cornerRadius(8)
-        .onTapGesture {
-            logger.info("BusStopDetailPopup: User tapped on bus line \(groupedArrival.line)")
-            let busLine = BusLine(
-                label: groupedArrival.line,
-                externalFrom: "",
-                externalTo: "",
-                colorBackground: "#00aecf",
-                colorForeground: "#ffffff"
-            )
-            nav.selectedBusLine = busLine
-            nav.selectedTab = 1
         }
     }
 }
