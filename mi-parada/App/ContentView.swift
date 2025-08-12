@@ -37,10 +37,10 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
-        .environmentObject(FavoritesManager())
-        .environmentObject(ArrivalWatchManager())
-        .environmentObject(BusLinesManager())
-        .environmentObject(NavigationCoordinator())
-}
+//#Preview {
+//    ContentView()
+//        .environmentObject(FavoritesManager())
+//        .environmentObject(ArrivalWatchManager())
+//        .environmentObject(BusLinesManager())
+//        .environmentObject(NavigationCoordinator())
+//}

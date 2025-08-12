@@ -11,10 +11,12 @@ struct WatchSelectionView: View {
     let stop: NearStopData
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var watchManager : ArrivalWatchManager
+    @EnvironmentObject var toastManager: ToastManager
     @State private var selectedLines: Set<String> = []
     @State private var isStartingWatch = false
     @State private var showSuccessMessage = false
     var onBusLineSelected: ((BusLine) -> Void)? = nil
+    
     
     var body: some View {
         NavigationView {
@@ -99,31 +101,6 @@ struct WatchSelectionView: View {
                 .padding(.bottom, 20)
             }
             .navigationBarHidden(true)
-            .overlay(
-                // Success message overlay
-                Group {
-                    if showSuccessMessage {
-                        VStack {
-                            Spacer()
-                            HStack {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.green)
-                                Text("Started watching \(selectedLines.count) line(s)")
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                            }
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 12)
-                            .background(Color(.systemBackground))
-                            .cornerRadius(8)
-                            .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
-                            .padding(.bottom, 100)
-                        }
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .animation(.easeInOut(duration: 0.3), value: showSuccessMessage)
-                    }
-                }
-            )
         }
     }
     // MARK: - Helper Functions
@@ -158,10 +135,9 @@ struct WatchSelectionView: View {
         // Show success message and dismiss
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             showSuccessMessage = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                dismiss()
-            }
+            toastManager.show(message: "Started watching \(selectedLines.count) line(s)")
+            dismiss()
         }
     }
 }
+
