@@ -16,6 +16,9 @@ struct BusLineSelectionRow: View {
 //    @EnvironmentObject private var watchManager : ArrivalWatchManager
     @Environment(\.colorScheme) var colorScheme
     
+    @EnvironmentObject var busLinesManager : BusLinesManager
+
+    
     var body: some View {
         HStack(spacing: 8) {
             // Selection button
@@ -29,15 +32,8 @@ struct BusLineSelectionRow: View {
                         .foregroundColor(isSelected ? .blue : .secondary)
                     
                     // Line number
-                    LineNumberView(busLine: BusLine(
-                        label: line.label,
-                        externalFrom: line.nameA,
-                        externalTo: line.nameB,
-                        colorBackground: "#00aecf",
-                        colorForeground: "#ffffff"
-                    ))
-                    
-                        
+                    LineNumberView(busLine: busLinesManager.getBusLineByLabel(label: line.label)!)
+                
                     Text(destinationName)
                         .font(.headline)
                         .foregroundColor(.primary)
@@ -67,22 +63,7 @@ struct BusLineSelectionRow: View {
                 .cornerRadius(12)
             }
             .buttonStyle(PlainButtonStyle())
-            
-            // Navigation button
-//            Button(action: {
-//                logger.info("BusStopDetailPopup: User tapped on bus line \(line.label) in watch selection")
-//                let busLine = BusLine(
-//                    label: line.label,
-//                    externalFrom: line.nameA,
-//                    externalTo: line.nameB,
-//                    color: "#007AFF"
-//                )
-//                onBusLineSelected?(busLine)
-//            }) {
-//                Image(systemName: "info.circle")
-//                    .font(.title2)
-//                    .foregroundColor(.blue)
-//            }
+        
         }
     }
     

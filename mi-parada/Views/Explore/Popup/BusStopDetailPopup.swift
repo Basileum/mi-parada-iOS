@@ -223,6 +223,7 @@ struct BusStopDetailPopup: View {
             stop: busStop,
             busLines: Set(stop.lines.map { line in
                 BusLine(
+                    id: line.id,
                     label: line.label,
                     externalFrom: line.nameA,
                     externalTo: line.nameB,
@@ -245,6 +246,7 @@ struct BusStopDetailPopup: View {
             stop: busStop,
             busLines: Set(stop.lines.map { line in
                 BusLine(
+                    id: line.id,
                     label: line.label,
                     externalFrom: line.nameA,
                     externalTo: line.nameB,
@@ -263,13 +265,14 @@ struct BusStopDetailPopup: View {
 struct BusLineItemView: View {
     let line: NearStopLine
     var onBusLineSelected: ((BusLine) -> Void)? = nil
+    let stop: NearStopData
     @EnvironmentObject var nav: NavigationCoordinator
     @EnvironmentObject var busLinesManager : BusLinesManager
 
     
     var body: some View {
         // Convert NearStopLine to BusLine for LineNumberView
-        let busLine = busLinesManager.getBusLine(id: line.label)
+        let busLine = busLinesManager.getBusLine(id: line.line)
         
         if (busLine != nil) {
             HStack(spacing: 12) {
@@ -290,13 +293,16 @@ struct BusLineItemView: View {
             .onTapGesture {
                 logger.info("BusStopDetailPopup: User tapped on bus line \(line.label)")
                 let busLine = BusLine(
+                    id: line.id,
                     label: line.label,
                     externalFrom: line.nameA,
                     externalTo: line.nameB,
                     colorBackground: "#00aecf",
                     colorForeground: "#ffffff"
                 )
+                let busStop = BusStop(id:stop.stopId, name: stop.stopName, clllocationCordinate2D: stop.coordinate)
                 nav.selectedBusLine = busLine
+                nav.selectedBusStop = busStop
                 nav.selectedTab = 1
             }
         }
@@ -376,12 +382,13 @@ struct GroupedArrival: Identifiable {
 struct GroupedArrivalRowView: View {
     let groupedArrival: GroupedArrival
     var onBusLineSelected: ((BusLine) -> Void)? = nil
+    let stop: NearStopData
     @EnvironmentObject var nav: NavigationCoordinator
     @EnvironmentObject var busLinesManager : BusLinesManager
 
     
     var body: some View {
-        let line = busLinesManager.getBusLine(id: groupedArrival.line)
+        let line = busLinesManager.getBusLineByLabel(label: groupedArrival.line)
         if line != nil{
             
             HStack(spacing: 0) {
@@ -394,9 +401,6 @@ struct GroupedArrivalRowView: View {
                     
                 }
                 .frame(width: 85)
-                
-                
-                
                 
                 VStack(alignment: .leading, spacing: 1) {
                     Text(groupedArrival.destination)
@@ -423,17 +427,24 @@ struct GroupedArrivalRowView: View {
             .onTapGesture {
                 logger.info("BusStopDetailPopup: User tapped on bus line \(groupedArrival.line)")
                 let busLine = BusLine(
+                    id: "",
                     label: groupedArrival.line,
                     externalFrom: "",
                     externalTo: "",
                     colorBackground: "#00aecf",
                     colorForeground: "#ffffff"
                 )
+                let busStop = BusStop(id:stop.stopId, name: stop.stopName, clllocationCordinate2D: stop.coordinate)
                 nav.selectedBusLine = busLine
+                nav.selectedBusStop = busStop
                 nav.selectedTab = 1
             }
         }
+        else {
+            Text("bus Line not find")
+        }
     }
+   
 }
 
 // MARK: - Arrival Row View
@@ -444,7 +455,8 @@ struct ArrivalRowView: View {
         HStack(spacing: 12) {
             // Line number
             LineNumberView(busLine: BusLine(
-                label: arrival.line,
+                id: arrival.line,
+                label: "",
                 externalFrom: "",
                 externalTo: "",
                 colorBackground: "#00aecf",

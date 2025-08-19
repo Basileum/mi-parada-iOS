@@ -17,6 +17,7 @@ struct WatchSelectionView: View {
     @State private var showSuccessMessage = false
     var onBusLineSelected: ((BusLine) -> Void)? = nil
     
+    let limitSelection : Int = 1
     
     var body: some View {
         NavigationView {
@@ -30,6 +31,15 @@ struct WatchSelectionView: View {
                     Text("Select which bus lines you want to watch at \(stop.stopName)")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
+                    
+                    HStack{
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 16))
+                        
+                        Text("On your lock screen, a live activity notification will inform you on close bus departures on the selected bus line during the next 20 minutes.")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }.padding(.horizontal, 15)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 20)
@@ -45,6 +55,7 @@ struct WatchSelectionView: View {
                                 isSelected: selectedLines.contains(line.label),
                                 onToggle: { isSelected in
                                     if isSelected {
+                                        selectedLines.removeAll() 
                                         selectedLines.insert(line.label)
                                     } else {
                                         selectedLines.remove(line.label)
@@ -119,6 +130,7 @@ struct WatchSelectionView: View {
         for lineLabel in selectedLines {
             if let line = stop.lines.first(where: { $0.label == lineLabel }) {
                 let busLine = BusLine(
+                    id: line.id,
                     label: line.label,
                     externalFrom: line.nameA,
                     externalTo: line.nameB,

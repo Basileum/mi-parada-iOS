@@ -13,8 +13,8 @@ struct BusLineResponse: Decodable {
 }
 
 struct BusLine : Identifiable, Codable, Hashable{
-    var id: String { label }  // Use `label` as the unique identifier
 
+    let id : String
     let label: String
     let externalFrom: String
     let externalTo: String

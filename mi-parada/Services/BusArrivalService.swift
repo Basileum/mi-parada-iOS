@@ -232,6 +232,53 @@ class BusArrivalService {
             }
         }
     }
+    
+    func decodeArrival(data: Data, completion: @escaping (Result<[BusArrival], Error>) -> Void) {
+        do {
+            // Step 1: Top-level dictionary
+            guard let topLevel = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                throw NSError(domain: "Missing top-level object", code: 1000)
+            }
+            print("✅ Top-level keys: \(topLevel.keys)")
+            
+            // Step 2: "data" dictionary
+            guard let dataDict = topLevel["data"] as? [String: Any] else {
+                throw NSError(domain: "Missing 'data'", code: 1001)
+            }
+            print("✅ 'data' dictionary keys: \(dataDict.keys)")
+            
+            // Step 3: Second-level "data" array
+            guard let secondLevelArray = dataDict["data"] as? [Any] else {
+                throw NSError(domain: "Missing second-level 'data' array", code: 1001)
+            }
+            print("✅ Second-level 'data' count: \(secondLevelArray.count)")
+            
+            // Step 4: First entry dictionary
+            guard let firstEntry = secondLevelArray.first as? [String: Any] else {
+                throw NSError(domain: "Empty 'data' array", code: 1002)
+            }
+            print("✅ First entry: \(firstEntry)")
+            
+            // Step 5: "Arrive" array
+            guard let arriveArray = firstEntry["Arrive"] as? [Any] else {
+                throw NSError(domain: "Missing 'Arrive'", code: 1003)
+            }
+            print("✅ Found \(arriveArray.count) arrivals")
+            
+            // Step 6: Decode arrivals into [BusArrival]
+            let arriveData = try JSONSerialization.data(withJSONObject: arriveArray, options: [])
+            let arrivals = try JSONDecoder().decode([BusArrival].self, from: arriveData)
+            
+            // Step 7: Complete on main thread
+            DispatchQueue.main.async {
+                completion(.success(arrivals))
+            }
+        } catch {
+            DispatchQueue.main.async {
+                completion(.failure(error))
+            }
+        }
+    }
 }
 
 

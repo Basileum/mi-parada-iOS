@@ -6,11 +6,12 @@
 //
 import Foundation
 
-
+@MainActor
 class BusLinesManager: ObservableObject {
     static let shared = BusLinesManager()
     
     @Published private(set) var busLines: [String : BusLine] = [:]
+    private(set) var busLinesByLabel: [String : BusLine] = [:]
 
     private let storageKey = "busLines"
 
@@ -20,19 +21,29 @@ class BusLinesManager: ObservableObject {
         logger.info("BusLinesManager: Loaded \(busLines.count) bus lines")
     }
     
-    func storeBusLines(busLines : [BusLine]) {
+    @MainActor
+    func storeBusLines(busLines : [BusLine]) async {
         logger.info("BusLinesManager: Storing \(busLines.count) bus lines")
         self.busLines = [:]
         for busLine in busLines {
             self.busLines[busLine.id] = busLine
+            self.busLinesByLabel[busLine.label] = busLine
         }
         logger.debug("BusLinesManager: Bus lines stored: \(self.busLines)")
+        logger.debug("BusLinesManager: Bus lines by label stored: \(self.busLinesByLabel)")
         saveBusLines()
     }
     
     func getBusLine(id: String) -> BusLine? {
         let busLine = busLines[id]
         logger.debug("BusLinesManager: Getting bus line with ID \(id): \(busLine?.label ?? "not found")")
+        return busLine
+    }
+    
+    func getBusLineByLabel(label: String) -> BusLine? {
+        logger.debug(label)
+        let busLine = busLinesByLabel[label]
+        logger.debug("BusLinesManager: Getting bus line with Label \(label): \(busLine?.id ?? "not found")")
         return busLine
     }
     

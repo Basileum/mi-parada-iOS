@@ -34,6 +34,18 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             }
         }
         
+        BusLineService.fetchBusLines { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let lines):
+                    logger.info("Bus lines fetched at application starup: \(lines.count)")
+                case .failure(let error):
+                    logger.error("Failed to fetch bus lines  at application starup: \(error)")
+                }
+            }
+        }
+        
+        
         return true
     }
 
@@ -45,10 +57,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         print("✅ Device Token: \(token)")
         if !DeviceTokenManager.shared.isSameToken(token) {
             DeviceTokenManager.shared.save(token)
-            // Optionally send to server here
         }
 
-        // TODO: Save/send this token to your server for push
     }
 
     // Called if registration fails

@@ -26,6 +26,8 @@ struct BusStop: Identifiable, Codable, AppEntity, Hashable {
         case latitude
         case longitude
     }
+
+    
     init(id: Int, name: String, coordinate: Coordinate) {
         self.id = id
         self.name = name

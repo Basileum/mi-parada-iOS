@@ -43,7 +43,10 @@ class BusLineService {
                 let decodedResponse = try JSONDecoder().decode(BusLineResponse.self, from: data)
                 logger.info("BusLineService: Successfully decoded \(decodedResponse.lines.count) bus lines")
                 
-                BusLinesManager.shared.storeBusLines(busLines: decodedResponse.lines)
+                Task{
+                    await BusLinesManager.shared.storeBusLines(busLines: decodedResponse.lines)
+
+                }
                 completion(.success(decodedResponse.lines))
             
             } catch {

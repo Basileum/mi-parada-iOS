@@ -11,17 +11,26 @@ import SwiftUI
 struct mi_paradaApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var toastManager : ToastManager
+    @StateObject var webSocketPoolManager : WebSocketPoolManager
     @StateObject var favoritesManager : FavoritesManager
     @StateObject var arrivalWatchManager = ArrivalWatchManager()
     @StateObject var busLinesManager = BusLinesManager()
     @StateObject var navCoordinator = NavigationCoordinator()
+    @StateObject var store : ArrivalsStore
     
+
     init() {
         _ = AnonymousUserManager.shared.userID
         
         let toast = ToastManager()
         _toastManager = StateObject(wrappedValue: toast)
         _favoritesManager = StateObject(wrappedValue: FavoritesManager(toastManager: toast))
+        
+        let store = ArrivalsStore()
+        _store = StateObject(wrappedValue: store)
+
+        let pool = WebSocketPool(store: store)
+        _webSocketPoolManager = StateObject(wrappedValue: WebSocketPoolManager(pool:pool))
     }
 
 
@@ -32,8 +41,10 @@ struct mi_paradaApp: App {
                     .environmentObject(favoritesManager)
                     .environmentObject(toastManager)
                     .environmentObject(arrivalWatchManager)
-                    .environmentObject(busLinesManager)
+                    .environmentObject(BusLinesManager.shared)
                     .environmentObject(navCoordinator)
+                    .environmentObject(webSocketPoolManager)
+                    .environmentObject(store)
             }
             .environmentObject(toastManager)
         }

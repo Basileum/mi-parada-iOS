@@ -163,7 +163,7 @@ struct BusLineDetailView: View {
         .onAppear {
             loadGeoData()
             if(busLine.externalFrom.isEmpty){
-                busLine = busLinesManager.getBusLine(id: busLine.label)!
+                busLine = busLinesManager.getBusLineByLabel(label: busLine.label)!
             }
         }
         .onChange(of: overlayController) { controller in

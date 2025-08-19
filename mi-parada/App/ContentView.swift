@@ -31,6 +31,11 @@ struct ContentView: View {
                 }
                 .tag(2)
             
+//            testSocketView()
+//                .tabItem {
+//                    Label("Favorites", systemImage: "star")
+//                }
+//                .tag(3)
             
         }
         //.tabViewStyle(.sidebarAdaptable)

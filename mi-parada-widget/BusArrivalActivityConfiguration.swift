@@ -20,23 +20,33 @@ struct BusArrivalWidgetLiveActivity: Widget {
                 // Header with bus line and stop info
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
-                        
-                        
-                        HStack(spacing: 6) {
-                            Image(systemName: "bus.fill")
-                                .font(.caption)
-                                .foregroundColor(.white)
+                        HStack{
+                            HStack(spacing: 6) {
+                                Image(systemName: "bus.fill")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                                
+                                Text("\(context.attributes.watchStop.busLine.label)")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                            }
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.black.opacity(0.3))
+                            .cornerRadius(6)
                             
-                            Text("Line \(context.attributes.watchStop.busLine.label)")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.white)
+                            HStack{
+                                Image(systemName: "arrow.right.circle")
+                                    .font(.system(size: 10))
+                                    .foregroundColor(.white)
+                                Text(context.attributes.watchStop.busLine.externalTo)
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
                         }
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.black.opacity(0.3))
-                        .cornerRadius(6)
                     }
+            
                     
                     Spacer()
                     
@@ -62,6 +72,7 @@ struct BusArrivalWidgetLiveActivity: Widget {
                 
                 // Enhanced arrival time display
                 HStack {
+                    Spacer()
                     HStack(spacing: 10) {
                         Image(systemName: "clock.fill")
                             .foregroundColor(.white)
@@ -81,7 +92,7 @@ struct BusArrivalWidgetLiveActivity: Widget {
                             
                         }
                         
-                        
+                        Spacer()
                         
                         
                         VStack(alignment: .leading, spacing: 2) {
@@ -97,25 +108,26 @@ struct BusArrivalWidgetLiveActivity: Widget {
                                 .foregroundColor(.white)
                             
                         }.padding(.leading, 20)
+                        Spacer()
                     }
                     
-                    Spacer()
-                    
-                    // Status indicator
-                    HStack(spacing: 6) {
-                        Circle()
-                            .fill(getStatusColor(context.state.busEstimatedArrival))
-                            .frame(width: 10, height: 10)
-                        
-                        Text(getStatusText(context.state.busEstimatedArrival))
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                    }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Color.black.opacity(0.3))
-                    .cornerRadius(8)
+//                    Spacer()
+//                    
+//                    // Status indicator
+//                    HStack(spacing: 6) {
+//                        Circle()
+//                            .fill(getStatusColor(context.state.busEstimatedArrival))
+//                            .frame(width: 10, height: 10)
+//                        
+//                        Text(getStatusText(context.state.busEstimatedArrival))
+//                            .font(.caption)
+//                            .fontWeight(.bold)
+//                            .foregroundColor(.white)
+//                    }
+//                    .padding(.horizontal, 12)
+//                    .padding(.vertical, 6)
+//                    .background(Color.black.opacity(0.3))
+//                    .cornerRadius(8)
                 }
             }
             .padding(.horizontal, 16)
@@ -139,36 +151,62 @@ struct BusArrivalWidgetLiveActivity: Widget {
             DynamicIsland {
                 // Expanded UI goes here
                 DynamicIslandExpandedRegion(.leading) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Line \(context.attributes.watchStop.busLine.label)")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                        
-                        Text(context.attributes.watchStop.busStop.name)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
+                    VStack(alignment: .center, spacing: 4) {
+                            HStack(spacing: 6) {
+                                Image(systemName: "bus.fill")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                                
+                                Text("\(context.attributes.watchStop.busLine.label)")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                            }
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.blue.opacity(0.3))
+                            .cornerRadius(6)
+                            
+                            HStack{
+                                Image(systemName: "arrow.right.circle")
+                                    .font(.system(size: 10))
+                                    .foregroundColor(.white)
+                                Text(context.attributes.watchStop.busLine.externalTo)
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
+                        }
+                    
                 }
                 
                 DynamicIslandExpandedRegion(.trailing) {
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.busEstimatedArrival))
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.blue)
+                    VStack(alignment: .center, spacing: 2) {
+                        HStack{
+                            Image(systemName: "clock.fill")
+                                .foregroundColor(.blue)
+                                .font(.title3)
+                            
+                            Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.busEstimatedArrival))
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(.blue)
+                        }
                         
-                        Text("until arrival")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
+                        VStack{
+                            Text("NEXT:")
+                                .font(.caption)
+                            Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.secondBusEstimatedArrival))
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .foregroundColor(.blue)
+                        }
+                    }.padding(.trailing, 15)
                 }
                 
                 DynamicIslandExpandedRegion(.bottom) {
-                    BusTimelineView(
-                        estimatedArrival: context.state.busEstimatedArrival,
-                        secondBusEstimatedArrival: context.state.secondBusEstimatedArrival
-                    )
-                    .frame(height: 30)
+                    Text("\(context.attributes.watchStop.busStop.name)")
+                        .font(.title2)
+                        .padding(.vertical, 10)
                 }
             } compactLeading: {
                 SmallLineNumberView(busLine: context.attributes.watchStop.busLine)
@@ -176,7 +214,6 @@ struct BusArrivalWidgetLiveActivity: Widget {
                     .padding(.leading)
             } compactTrailing: {
                 Text(ArrivalFormatsTime.simpleFormatArrivalTime(context.state.busEstimatedArrival))
-                    .font(.system(size: 5))
                     .fontWeight(.semibold)
                     .foregroundColor(.blue)
             } minimal: {
@@ -295,37 +332,8 @@ struct BusTimelineView: View {
                             arrivalTime: secondBusEstimatedArrival
                         )
                     }
-                    
-                    // Additional bus icons (smaller, more subtle)
-//                    if let additionalBuses = additionalBuses {
-//                        ForEach(Array(additionalBuses.enumerated()), id: \.offset) { index, bus in
-//                            let additionalProgress = calculateProgress(for: bus.estimateArrive)
-//                            BusIconView(
-//                                progress: additionalProgress,
-//                                isMain: false,
-//                                arrivalTime: bus.estimateArrive
-//                            )
-//                        }
-//                    }
                 }
             }
-            
-            // Stop indicator with better contrast
-//            HStack {
-//                Spacer()
-//                VStack(spacing: 3) {
-//                    Image(systemName: "mappin.circle.fill")
-//                        .font(.title2)
-//                        .foregroundColor(.white)
-//                        .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
-//                    
-//                    Text("STOP")
-//                        .font(.caption2)
-//                        .fontWeight(.bold)
-//                        .foregroundColor(.white)
-//                        .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 1)
-//                }
-//            }
         }
     }
 }
@@ -443,6 +451,7 @@ extension BusArrivalAttributes {
         BusArrivalAttributes(
             watchStop: WatchStop(
                 busLine: BusLine(
+                    id: "024",
                     label: "24",
                     externalFrom: "from",
                     externalTo: "to",

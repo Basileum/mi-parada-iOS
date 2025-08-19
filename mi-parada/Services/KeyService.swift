@@ -53,6 +53,8 @@ class KeyService {
     
     func signPayload(_ payload: Data, timestamp: String) -> String? {
         logger.debug(#function)
+        print(payload)
+        print(payload)
         guard let privateKey = KeyManager.getPrivateKey() else { return nil }
         
         
@@ -76,5 +78,41 @@ class KeyService {
         }
         
         return (signature as Data).base64EncodedString()
+    }
+    
+    func signPayload(payload: String) -> String? {
+        logger.debug(#function)
+        print(payload)
+        print(payload)
+        guard let privateKey = KeyManager.getPrivateKey() else { return nil }
+        
+        
+        let toSign = payload
+        
+        let signedString = toSign
+        if let data = toSign.data(using: .utf8) {
+            let cfData: CFData = data as CFData
+            
+            print("Payload hex:", String(format: "%02x", toSign))
+            
+            print("Xcode signed string: '\(signedString)'")
+            
+            var error: Unmanaged<CFError>?
+            
+            guard let signature = SecKeyCreateSignature(
+                privateKey,
+                .rsaSignatureMessagePKCS1v15SHA256,
+                cfData,
+                &error
+            ) else {
+                logger.error("Signing error: \(error?.takeRetainedValue().localizedDescription ?? "unknown")")
+                return nil
+            }
+            return (signature as Data).base64EncodedString()
+        }
+        
+        else {
+            return ""
+        }
     }
 }

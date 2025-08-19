@@ -69,6 +69,12 @@ struct BusLineSearchView: View {
                     nav.selectedBusLine = nil
                 }
             }
+            .onChange(of: nav.selectedBusStop) { newValue in
+                if let stop = newValue {
+                    path.append(stop)
+                    nav.selectedBusStop = nil
+                }
+            }
             .onAppear {
                 if let preselected = selectedBusLine {
                     path.append(preselected) // Go directly to this line
