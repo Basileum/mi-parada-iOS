@@ -521,6 +521,17 @@
           }
         }
       }
+    },
+    "Your location is needed to see the nearest bus stops on the map" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se necesita tu ubicación para ver las paradas de autobús más cercanas"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
