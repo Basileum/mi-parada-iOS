@@ -11,6 +11,20 @@ class BusWebSocket: NSObject {
     private var isAuthenticated = false
     private var onReadyCallback: (() -> Void)?
     
+    // Connection state management
+    private var connectionState: ConnectionState = .disconnected
+    private var lastMessageReceived: Date?
+    private var retryCount: Int = 0
+    private let maxRetries: Int = 3
+    
+    enum ConnectionState {
+        case disconnected
+        case connecting
+        case connected
+        case authenticated
+        case subscribed
+    }
+    
     private override init() {
         self.store = nil
         super.init()
@@ -32,18 +46,24 @@ class BusWebSocket: NSObject {
     func connect(onReady: @escaping () -> Void) {
         self.onReadyCallback = onReady
         
-        // Avoid reconnect if already connected to this stop/line
-        if self.stopID == stopID && self.lineID == lineID && webSocketTask != nil {
-            print("Already connected to stop \(stopID), line \(lineID ?? "nil")")
+        // Only skip if connection is already ready for use
+        if isReadyForUse() {
+            print("Connection already ready for stop \(stopID ?? "unknown")")
+            onReadyCallback?()
             return
         }
         
-        //self.stopID = stopID
-        //self.lineID = lineID
+        // Don't connect if we're already connecting
+        if connectionState == .connecting {
+            print("Already connecting, skipping duplicate connection attempt")
+            return
+        }
+        
+        connectionState = .connecting
         
         let urlWebSocket = Bundle.main.infoDictionary?["WEBSOCKET_URL"] as! String
         let url = URL(string: urlWebSocket)! // no params
-        logger.info(urlWebSocket)
+        logger.info("Connecting to WebSocket: \(urlWebSocket)")
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
         
         webSocketTask = session.webSocketTask(with: url)
@@ -55,9 +75,51 @@ class BusWebSocket: NSObject {
     func disconnect() {
         webSocketTask?.cancel(with: .goingAway, reason: nil)
         webSocketTask = nil
+        connectionState = .disconnected
         stopID = nil
         lineID = nil
         isAuthenticated = false
+    }
+    
+    // MARK: - Connection State Methods
+    
+    func isReadyForUse() -> Bool {
+        return connectionState == .subscribed && webSocketTask != nil
+    }
+    
+    func isStale() -> Bool {
+        guard let lastMessage = lastMessageReceived else { return true }
+        return Date().timeIntervalSince(lastMessage) > 60 // 1 minute timeout
+    }
+    
+    func getLastUpdateTime() -> Date? {
+        return lastMessageReceived
+    }
+    
+    func resetRetryCount() {
+        retryCount = 0
+    }
+    
+    private func reconnect() {
+        guard retryCount < maxRetries else {
+            print("Max retries reached, giving up")
+            connectionState = .disconnected
+            return
+        }
+        
+        retryCount += 1
+        print("Retrying connection (attempt \(retryCount)/\(maxRetries))")
+        
+        // Clean up the existing connection before retrying
+        webSocketTask?.cancel(with: .goingAway, reason: nil)
+        webSocketTask = nil
+        connectionState = .disconnected
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.connect { [weak self] in
+                self?.sendSubscription()
+            }
+        }
     }
     
     // MARK: - Sending
@@ -138,7 +200,17 @@ class BusWebSocket: NSObject {
             switch result {
             case .failure(let error):
                 print("Receive error:", error)
+                // Only retry if we haven't exceeded max retries
+                if self.retryCount < self.maxRetries {
+                    self.reconnect()
+                } else {
+                    print("Max retries reached, stopping listen loop")
+                    self.connectionState = .disconnected
+                }
             case .success(let message):
+                // Reset retry count on successful message
+                self.retryCount = 0
+                
                 switch message {
                 case .string(let text):
                     self.handleString(text)
@@ -147,10 +219,12 @@ class BusWebSocket: NSObject {
                 @unknown default:
                     break
                 }
+                
+                // Keep listening only if connection is still active
+                if self.connectionState != .disconnected {
+                    self.listen()
+                }
             }
-            
-            // Keep listening
-            self.listen()
         }
     }
     
@@ -158,7 +232,7 @@ class BusWebSocket: NSObject {
     
     private func handleString(_ text: String) {
         logger.info("handleString")
-        //logger.info(text)
+        
         guard let json = try? JSONSerialization.jsonObject(with: Data(text.utf8)) as? [String: Any] else {
             return
         }
@@ -171,14 +245,16 @@ class BusWebSocket: NSObject {
             
         case "handshake_success":
             isAuthenticated = true
+            connectionState = .authenticated
+            retryCount = 0 // Reset retry count on success
             logger.info("✅ Authentication successful!")
-            // Call the callback when ready
             onReadyCallback?()
             
         case "bus_update":
-            logger.info("Update received")
+            connectionState = .subscribed
+            lastMessageReceived = Date() // Only track actual bus updates
+            logger.info("Update received at \(Date())")
             logger.info(json.keys.joined(separator: ", "))
-            //logger.info(json.values.joined(separator: ", "))
             if let firstdata = json["data"] as? [String: Any] {
                 if let dataArray = firstdata["data"] as? [[String: Any]] {
                     print(dataArray)
@@ -225,13 +301,20 @@ extension BusWebSocket: URLSessionWebSocketDelegate {
                     didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
                     reason: Data?) {
         print("WebSocket closed:", closeCode)
+        connectionState = .disconnected
+        
+        // Auto-retry for unexpected closures
+        if closeCode != .goingAway && closeCode != .normalClosure {
+            reconnect()
+        }
     }
     
     func urlSession(_ session: URLSession,
                     webSocketTask: URLSessionWebSocketTask,
                     didOpenWithProtocol protocol: String?) {
         logger.info("WebSocket connected")
-        //sendSubscription()
+        connectionState = .connected
+        retryCount = 0 // Reset retry count on successful connection
     }
 }
 

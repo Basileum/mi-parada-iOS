@@ -24,25 +24,25 @@ struct LineNumberView: View {
     }
 }
 
-#Preview {
-    LineNumberView(busLine: BusLine(
-        label: "24",
-        externalFrom: "from",
-        externalTo: "to",
-        colorBackground: "#00aecf",
-        colorForeground: "#ffffff"))
-    
-    LineNumberView(busLine: BusLine(
-        label: "C02",
-        externalFrom: "from",
-        externalTo: "to",
-        colorBackground: "#00aecf",
-        colorForeground: "#ffffff"))
-    
-    LineNumberView(busLine: BusLine(
-        label: "001",
-        externalFrom: "from",
-        externalTo: "to",
-        colorBackground: "#00aecf",
-        colorForeground: "#ffffff"))
-}
+//#Preview {
+//    LineNumberView(busLine: BusLine(
+//        label: "24",
+//        externalFrom: "from",
+//        externalTo: "to",
+//        colorBackground: "#00aecf",
+//        colorForeground: "#ffffff"))
+//    
+//    LineNumberView(busLine: BusLine(
+//        label: "C02",
+//        externalFrom: "from",
+//        externalTo: "to",
+//        colorBackground: "#00aecf",
+//        colorForeground: "#ffffff"))
+//    
+//    LineNumberView(busLine: BusLine(
+//        label: "001",
+//        externalFrom: "from",
+//        externalTo: "to",
+//        colorBackground: "#00aecf",
+//        colorForeground: "#ffffff"))
+//}

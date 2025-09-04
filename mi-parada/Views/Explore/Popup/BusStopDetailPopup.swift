@@ -12,10 +12,13 @@ struct BusStopDetailPopup: View {
     let stop: NearStopData
     @Binding var isPresented: Bool
     @EnvironmentObject var favorites: FavoritesManager
+    @EnvironmentObject var webSocketPoolManager: WebSocketPoolManager
     @State private var selectedTab = 0
     @State private var dragOffset: CGFloat = 0
     @State private var isDragging = false
     @State private var showingWatchSelection = false
+    @State private var currentStopID: String?
+    @State private var lastUpdateTime: Date?
     @EnvironmentObject var nav: NavigationCoordinator
 
 
@@ -92,6 +95,9 @@ struct BusStopDetailPopup: View {
                         .foregroundColor(.secondary)
                     
                     Spacer()
+                    
+                    // Update time indicator
+                    UpdateTimeView(lastUpdateTime: lastUpdateTime)
                 }
             }
             .padding(.horizontal, 20)
@@ -207,6 +213,43 @@ struct BusStopDetailPopup: View {
         )
         .sheet(isPresented: $showingWatchSelection) {
             WatchSelectionView(stop: stop, onBusLineSelected: onBusLineSelected)
+        }
+        .onAppear {
+            currentStopID = String(stop.stopId)
+            ensureConnection()
+        }
+        .onChange(of: stop.stopId) { newStopID in
+            currentStopID = String(newStopID)
+            ensureConnection()
+        }
+        .onChange(of: isPresented) { newValue in
+            if !newValue {
+                // Don't cleanup immediately - let it timeout after 1 minute
+                scheduleCleanup()
+            }
+        }
+        .onReceive(Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()) { _ in
+            updateLastUpdateTime()
+        }
+    }
+    
+    private func ensureConnection() {
+        Task {
+            await webSocketPoolManager.pool.connect(stopID: String(stop.stopId), lineID: nil)
+        }
+    }
+    
+    private func scheduleCleanup() {
+        // Connection will be cleaned up automatically after 1 minute
+        // No immediate cleanup needed
+    }
+    
+    private func updateLastUpdateTime() {
+        Task {
+            let updateTime = await webSocketPoolManager.getLastUpdateTime(stopID: String(stop.stopId), lineID: nil)
+            DispatchQueue.main.async {
+                self.lastUpdateTime = updateTime
+            }
         }
     }
     

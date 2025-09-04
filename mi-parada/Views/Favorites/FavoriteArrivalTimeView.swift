@@ -12,6 +12,7 @@ struct FavoriteArrivalTimeView: View {
     let busLine: BusLine
     
     @State private var isLoading : Bool = true
+    @State private var lastUpdateTime: Date?
     //@State private var timer = Timer.publish(every: 15, on: .main, in: .common).autoconnect()
 
     @EnvironmentObject var store: ArrivalsStore
@@ -19,43 +20,61 @@ struct FavoriteArrivalTimeView: View {
     @EnvironmentObject var webSocketPoolManager: WebSocketPoolManager
     
     var body: some View {
-        HStack{
-            let loadArrivals = store.arrivals(for: String(busStop.id), lineID: busLine.id)
-            if(loadArrivals.isEmpty == false){
-                let arrivalTimes = loadArrivals.map {
-                    ArrivalFormatsTime.simpleFormatArrivalTime($0.estimateArrive)
-                }.joined(separator: ", ")
-                Text(loadArrivals.first?.destination ?? "")
-                    .font(.caption)
-                Spacer()
-                Text(arrivalTimes)
+        VStack(alignment: .trailing, spacing: 2) {
+            HStack{
+                let loadArrivals = store.arrivals(for: String(busStop.id), lineID: busLine.id)
+                if(loadArrivals.isEmpty == false){
+                    let arrivalTimes = loadArrivals.map {
+                        ArrivalFormatsTime.simpleFormatArrivalTime($0.estimateArrive)
+                    }.joined(separator: ", ")
+                    Text(loadArrivals.first?.destination ?? "")
+                        .font(.caption)
+                    Spacer()
+                    Text(arrivalTimes)
+                }
+                else {
+                    ProgressView()
+                }
             }
-            else {
-                ProgressView()
-            }
+            
+            // Update time indicator
+            UpdateTimeView(lastUpdateTime: lastUpdateTime)
         }
         .onAppear {
-            fetchArrivals()
+            ensureConnection()
+        }
+        .onReceive(Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()) { _ in
+            updateLastUpdateTime()
+        }
+        .onDisappear {
+            scheduleCleanup()
         }
     }
     
     
     private func fetchArrivals() {
         isLoading = true
-        
-        Task{
+        ensureConnection()
+    }
+    
+    private func ensureConnection() {
+        Task {
             await webSocketPoolManager.pool.connect(stopID: String(busStop.id), lineID: busLine.id)
         }
-        
-//        loadNextBusArrival(stop: busStop, line: busLine) { result in
-//            switch result {
-//            case .success(let arrivals):
-//                loadArrivals = arrivals
-//            case .failure(let error):
-//                print("Error: \(error.localizedDescription)")
-//            }
-//            isLoading = false
-//        }
+    }
+    
+    private func updateLastUpdateTime() {
+        Task {
+            let updateTime = await webSocketPoolManager.getLastUpdateTime(stopID: String(busStop.id), lineID: busLine.id)
+            DispatchQueue.main.async {
+                self.lastUpdateTime = updateTime
+            }
+        }
+    }
+    
+    private func scheduleCleanup() {
+        // Connection will be cleaned up automatically after 1 minute
+        // No immediate cleanup needed
     }
     
     

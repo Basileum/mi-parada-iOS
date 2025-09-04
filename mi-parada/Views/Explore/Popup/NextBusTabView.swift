@@ -52,17 +52,6 @@ struct NextBusTabView: View {
                         .padding(.top, 8)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            } else if groupedArrivals.isEmpty {
-//                VStack {
-//                    Image(systemName: "clock")
-//                        .font(.title)
-//                        .foregroundColor(.secondary)
-//                    Text("No arrivals available")
-//                        .font(.subheadline)
-//                        .foregroundColor(.secondary)
-//                        .padding(.top, 8)
-//                }
-//                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ScrollView {
                     LazyVStack(spacing: 12) {
@@ -77,20 +66,16 @@ struct NextBusTabView: View {
         }
         .padding(.top, 16)
         .onAppear {
-            loadArrivals()
+            ensureConnection()
         }
         .onChange(of: stop.stopId) { _ in
-            loadArrivals()
+            ensureConnection()
         }
     }
     
-    private func loadArrivals() {
-        logger.info("BusStopDetailPopup: Loading arrivals for stop \(stop.stopName) (ID: \(stop.stopId))")
-        //isLoading = true
-        
-        Task{
+    private func ensureConnection() {
+        Task {
             await webSocketPoolManager.pool.connect(stopID: String(stop.stopId), lineID: nil)
         }
-        
     }
 }
