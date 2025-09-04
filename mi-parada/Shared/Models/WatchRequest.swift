@@ -11,4 +11,6 @@ struct WatchRequest: Codable {
     let deviceToken: String
     let stopId: Int
     let line: String
+    let environment: String  // "development" or "production"
+    let bundleIdentifier: String  // For additional validation
 }

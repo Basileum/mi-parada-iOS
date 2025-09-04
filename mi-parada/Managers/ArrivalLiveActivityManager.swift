@@ -16,6 +16,15 @@ final class ArrivalLiveActivityManager: ObservableObject {
         
     }
     
+    /// Get current build environment
+    private func getCurrentEnvironment() -> String {
+        #if DEBUG
+        return "development"
+        #else
+        return "production"
+        #endif
+    }
+    
     @Published var activityViewState: ActivityViewState? = nil
     @Published var errorMessage: String? = nil
     
@@ -111,10 +120,12 @@ final class ArrivalLiveActivityManager: ObservableObject {
             userId: AnonymousUserManager.shared.userID,
             deviceToken: pushTokenString,
             stopId: watchStop.busStop.id,
-            line: watchStop.busLine.label
+            line: watchStop.busLine.label,
+            environment: getCurrentEnvironment(),
+            bundleIdentifier: Bundle.main.bundleIdentifier ?? ""
         )
         ArrivalWatchService().sendWatchRequest(watchRequest: request)
-        logger.info("ArrivalWatchManager: Watch request sent for token: \(pushTokenString)")
+        logger.info("ArrivalWatchManager: Watch request sent for token: \(pushTokenString) with environment: \(getCurrentEnvironment())")
         return request
     }
     

@@ -2,17 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSSupportsLiveActivitiesFrequentUpdates</key>
-	<true/>
 	<key>API_BASE_URL</key>
 	<string>${API_BASE_URL}</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location to center the map.</string>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
-	<key>MKDirectionsApplicationSupportedModes</key>
-	<array>
-		<string>MKDirectionsModeBus</string>
-	</array>
+	<key>WEBSOCKET_URL</key>
+	<string>${WEBSOCKET_URL}</string>
 </dict>
 </plist>
